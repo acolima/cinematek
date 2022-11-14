@@ -3,24 +3,31 @@ import {
 	IconButton,
 	InputAdornment,
 	OutlinedInput,
-	Typography
-} from "@mui/material";
-import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import { Menu, Search, SearchOutlined } from "@mui/icons-material";
+	Typography,
+} from '@mui/material';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import { Menu, Search, SearchOutlined } from '@mui/icons-material';
 
-import { useNavigate } from "react-router-dom";
-import useMenu from "../../hooks/useMenu";
+import { useNavigate } from 'react-router-dom';
+import useMenu from '../../hooks/useMenu';
 
-import styles from "./styles";
+import styles from './styles';
 
 interface Props {
-	page: string;
+	page?: string;
 	movieName?: string;
 	setMovieName?: React.Dispatch<React.SetStateAction<string>>;
 	handleSearch?: () => void;
+	username?: string;
 }
 
-function Header({ page, movieName, setMovieName, handleSearch }: Props) {
+function Header({
+	page,
+	movieName,
+	setMovieName,
+	handleSearch,
+	username,
+}: Props) {
 	const { toggleDrawer } = useMenu();
 
 	let navigate = useNavigate();
@@ -28,12 +35,12 @@ function Header({ page, movieName, setMovieName, handleSearch }: Props) {
 	function handleInputKeyDown(
 		e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
 	) {
-		if (e.key === "Enter" && handleSearch) {
+		if (e.key === 'Enter' && handleSearch) {
 			handleSearch()!;
 		}
 	}
 
-	if (page === "search") {
+	if (page === 'search') {
 		return (
 			<Box sx={styles.header}>
 				<ArrowBackOutlinedIcon sx={styles.icons} onClick={() => navigate(-1)} />
@@ -56,10 +63,10 @@ function Header({ page, movieName, setMovieName, handleSearch }: Props) {
 		);
 	}
 
-	if (page === "main")
+	if (page === 'main')
 		return (
 			<Box sx={styles.headerMain}>
-				<Search sx={styles.icons} onClick={() => navigate("/search")} />
+				<Search sx={styles.icons} onClick={() => navigate('/search')} />
 				<Typography sx={styles.logo}>CINEMATEK</Typography>
 				<Menu sx={styles.icons} onClick={toggleDrawer} />
 			</Box>
@@ -69,9 +76,9 @@ function Header({ page, movieName, setMovieName, handleSearch }: Props) {
 		<Box sx={styles.header}>
 			<ArrowBackOutlinedIcon
 				sx={styles.icons}
-				onClick={() => navigate("/movies")}
+				onClick={() => navigate('/movies')}
 			/>
-			<Typography sx={styles.logo}>{page}</Typography>
+			<Typography sx={styles.logo}>{page || username}</Typography>
 			<Menu sx={styles.icons} onClick={toggleDrawer} />
 		</Box>
 	);

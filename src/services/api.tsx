@@ -59,6 +59,12 @@ function findUserMovie(token: string | undefined, id: number) {
 	return axios.get(`${BASE_URL}/users/movies/${id}`, config);
 }
 
+function getAllUserMovies(token: string | undefined) {
+	const config = createConfig(token);
+
+	return axios.get(`${BASE_URL}/users/movies`, config);
+}
+
 function getUserMovies(token: string | undefined, filter: string) {
 	const config = createConfig(token);
 
@@ -100,6 +106,7 @@ const api = {
 	deleteList,
 	findMoviesByName,
 	findUserMovie,
+	getAllUserMovies,
 	getLists,
 	getMovie,
 	getTrendingMovies,

@@ -3,15 +3,24 @@ import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './contexts/authContext';
 import { MenuDrawerProvider } from './contexts/menuDrawerContext';
 import PageRoutes from './routes';
+import { createTheme, ThemeProvider } from '@mui/material';
+
+const theme = createTheme({
+	typography: {
+		fontFamily: ['Poppins', 'Koulen'].join(','),
+	},
+});
 
 function App() {
 	return (
-		<AuthProvider>
-			<MenuDrawerProvider>
-				<ToastContainer />
-				<PageRoutes />
-			</MenuDrawerProvider>
-		</AuthProvider>
+		<ThemeProvider theme={theme}>
+			<AuthProvider>
+				<MenuDrawerProvider>
+					<ToastContainer />
+					<PageRoutes />
+				</MenuDrawerProvider>
+			</AuthProvider>
+		</ThemeProvider>
 	);
 }
 
