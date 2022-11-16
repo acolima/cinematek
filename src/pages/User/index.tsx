@@ -1,56 +1,29 @@
-import { Box, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import Header from '../../components/Header';
-import MenuBar from '../../components/Menu';
-import useAuth from '../../hooks/useAuth';
-import useMenu from '../../hooks/useMenu';
-import api from '../../services/api';
+import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import Header from "../../components/Header";
+import MenuBar from "../../components/Menu";
+import useAuth from "../../hooks/useAuth";
+import useMenu from "../../hooks/useMenu";
+import api from "../../services/api";
+import { IMovie, IUserMovie } from "../../utils/models";
 import {
 	MovieContainer,
 	MovieList,
 	Page,
 	UserAvatar,
-	UserContainer,
-} from './styles';
-
-interface MoviesResult {
-	id: number;
-	favorite: boolean;
-	watched: boolean;
-	watchlist: boolean;
-	movies: Movies;
-}
-
-export interface Movies {
-	tmdbId: number;
-	title: string;
-	posterPath: string;
-}
-
-export interface ListResult {
-	id: number;
-	name: string;
-	listMovies: {
-		movies: {
-			tmdbId: number;
-			title: string;
-			posterPath: string;
-		};
-	}[];
-}
+	UserContainer
+} from "./styles";
 
 function User() {
 	const { showMenu } = useMenu();
 	const { auth } = useAuth();
 
-	const [movies, setMovies] = useState<MoviesResult[]>([]);
-	const [lists, setLists] = useState<ListResult[]>([]);
+	const [movies, setMovies] = useState<IUserMovie[]>([]);
 
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		getMovies();
-		getList();
 		setLoading(true);
 	}, [auth?.token]);
 
@@ -60,16 +33,6 @@ function User() {
 			console.log(data);
 			setMovies(data);
 			setLoading(false);
-		} catch (error) {
-			console.log(error);
-		}
-	}
-
-	async function getList() {
-		try {
-			const { data } = await api.getLists(auth?.token);
-			console.log(data);
-			setLists(data);
 		} catch (error) {
 			console.log(error);
 		}
@@ -89,13 +52,6 @@ function User() {
 					) : (
 						<p>{movies.length} filmes adicionados</p>
 					)}
-					{lists.length === 0 ? (
-						<p>Nenhuma lista criada</p>
-					) : (
-						<p>
-							{lists.length} {lists.length === 1 ? 'lista' : 'listas'}
-						</p>
-					)}
 				</Box>
 			</UserContainer>
 			<Typography>Favorite</Typography>
@@ -104,7 +60,7 @@ function User() {
 					.filter((movie) => movie.favorite === true)
 					.slice(0, 3)
 					.map((m) => (
-						<Movie key={m.id} movie={m.movies} />
+						<Movie key={m.id} movie={m.movie} />
 					))}
 			</MovieList>
 			<Typography>Watched</Typography>
@@ -113,7 +69,7 @@ function User() {
 					.filter((movie) => movie.watched === true)
 					.slice(0, 3)
 					.map((m) => (
-						<Movie key={m.id} movie={m.movies} />
+						<Movie key={m.id} movie={m.movie} />
 					))}
 			</MovieList>
 			<Typography>Watchlist</Typography>
@@ -122,20 +78,15 @@ function User() {
 					.filter((movie) => movie.watchlist === true)
 					.slice(0, 3)
 					.map((m) => (
-						<Movie key={m.id} movie={m.movies} />
+						<Movie key={m.id} movie={m.movie} />
 					))}
-			</MovieList>
-			<MovieList>
-				{lists.map((list) => (
-					<List key={list.id} list={list} />
-				))}
 			</MovieList>
 		</Page>
 	);
 }
 
 interface Props {
-	movie: Movies;
+	movie: IMovie;
 }
 
 function Movie({ movie }: Props) {
@@ -147,25 +98,6 @@ function Movie({ movie }: Props) {
 				width={100}
 			/>
 			<p>{movie.title}</p>
-		</MovieContainer>
-	);
-}
-
-interface ListProps {
-	list: ListResult;
-}
-
-function List({ list }: ListProps) {
-	const listCover = list.listMovies[0].movies.posterPath;
-
-	return (
-		<MovieContainer>
-			<img
-				alt={list.name}
-				width="80"
-				src={`https://image.tmdb.org/t/p/w400${listCover}`}
-			/>
-			<Typography>{list.name}</Typography>
 		</MovieContainer>
 	);
 }

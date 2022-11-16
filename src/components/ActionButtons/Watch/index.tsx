@@ -9,14 +9,14 @@ import useAuth from "../../../hooks/useAuth";
 
 import api from "../../../services/api";
 import styles from "../styles";
-import { MovieResult, UserMovie } from "../../../pages/MoviePage";
+import { IUserMovieActions, TMDBMovieResult } from "../../../utils/models";
 
 interface Props {
-	userMovie: UserMovie | null;
-	movie: MovieResult;
+	userMovie: IUserMovieActions | null;
+	movie: TMDBMovieResult;
 }
 
-function MovieActions({ userMovie, movie }: Props) {
+function WatchButtons({ userMovie, movie }: Props) {
 	const [watched, setWatched] = useState(userMovie?.watched);
 	const [watchlist, setWatchlist] = useState(userMovie?.watchlist);
 
@@ -70,4 +70,4 @@ function MovieActions({ userMovie, movie }: Props) {
 	);
 }
 
-export default MovieActions;
+export default WatchButtons;

@@ -1,10 +1,10 @@
 import { Box, Typography } from "@mui/material";
 
 import MovieSearchResult from "../MovieSearchResult";
-import { MoviesResult } from "../../pages/SearchPage";
+import { TMDBSearchResult } from "../../utils/models";
 
 interface MoviesListProps {
-	movies: MoviesResult[];
+	movies: TMDBSearchResult[];
 }
 
 function MoviesList({ movies }: MoviesListProps) {

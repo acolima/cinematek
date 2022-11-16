@@ -7,24 +7,25 @@ import {
 	InputAdornment,
 	OutlinedInput,
 	Typography
-} from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
+} from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 
-import AddedMovies from '../../components/AddedMovies';
-import SearchedMoviesResult from '../../components/SearchedMovies';
+import AddedMovies from "../../components/AddedMovies";
+import SearchedMoviesResult from "../../components/SearchedMovies";
 
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
-import api from '../../services/api';
-import styles from './styles';
-import { MoviesResult } from '../SearchPage';
-import { errorAlert, successAlert } from '../../utils/toastifyAlerts';
+import api from "../../services/api";
+import { tmdbApi } from "../../services/tmdbApi";
+import styles from "./styles";
+import { MoviesResult } from "../SearchPage";
+import { errorAlert, successAlert } from "../../utils/toastifyAlerts";
 
 function CreateList() {
-	const [movieName, setMovieName] = useState('');
-	const [listName, setListName] = useState('');
+	const [movieName, setMovieName] = useState("");
+	const [listName, setListName] = useState("");
 	const [movies, setMovies] = useState<MoviesResult[] | null>(null);
 	const [addedMovies, setAddedMovies] = useState<MoviesResult[]>([]);
 
@@ -45,10 +46,10 @@ function CreateList() {
 		setMovieName(name);
 
 		try {
-			const { data } = await api.findMoviesByName(name);
+			const { data } = await tmdbApi.findMoviesByName(name);
 			setMovies(data.results);
 		} catch (error) {
-			console.log('External API error');
+			console.log("External API error");
 		}
 	}
 
@@ -71,17 +72,17 @@ function CreateList() {
 				name: listName,
 				movies: movies
 			});
-			successAlert('List created!');
-			navigate('/lists');
+			successAlert("List created!");
+			navigate("/lists");
 		} catch (error) {
 			signOut();
-			errorAlert('Session expired. Please, log in again');
-			navigate('/');
+			errorAlert("Session expired. Please, log in again");
+			navigate("/");
 		}
 	}
 
 	function clearInput() {
-		setMovieName('');
+		setMovieName("");
 		setClearSearch(true);
 	}
 
@@ -129,13 +130,13 @@ function CreateList() {
 				</Box>
 
 				<ButtonGroup sx={styles.buttonsGroup}>
-					<Button variant="text" onClick={() => navigate('/lists')}>
+					<Button variant="text" onClick={() => navigate("/lists")}>
 						Cancel
 					</Button>
 					<Button
 						disabled={addedMovies.length === 0}
 						variant="contained"
-						sx={{ backgroundColor: '#0c174b' }}
+						sx={{ backgroundColor: "#0c174b" }}
 						onClick={handleNewList}
 					>
 						Save

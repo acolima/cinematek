@@ -6,12 +6,12 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 
 import { useState } from "react";
 
-import { MoviesResult } from "../../pages/SearchPage";
+import { TMDBSearchResult } from "../../utils/models";
 
 interface SearchResultProps {
-	movie: MoviesResult;
-	addedMovies: MoviesResult[];
-	setAddedMovies: React.Dispatch<React.SetStateAction<MoviesResult[]>>;
+	movie: TMDBSearchResult;
+	addedMovies: TMDBSearchResult[];
+	setAddedMovies: React.Dispatch<React.SetStateAction<TMDBSearchResult[]>>;
 }
 
 function SearchedMoviesResult({
@@ -21,7 +21,7 @@ function SearchedMoviesResult({
 }: SearchResultProps) {
 	const [addMovie, setAddMovie] = useState(true);
 
-	function handleAddMovie(movie: MoviesResult) {
+	function handleAddMovie(movie: TMDBSearchResult) {
 		const movies = [...addedMovies];
 		movies.push(movie);
 		setAddedMovies([...movies]);
@@ -29,7 +29,7 @@ function SearchedMoviesResult({
 		setAddMovie(false);
 	}
 
-	function handleRemoveMovie(movie: MoviesResult) {
+	function handleRemoveMovie(movie: TMDBSearchResult) {
 		let movies = [...addedMovies];
 		movies = movies.filter((m) => movie !== m);
 		setAddedMovies([...movies]);

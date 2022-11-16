@@ -1,9 +1,9 @@
 import { Box, Button, Chip, Typography } from '@mui/material';
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
-import FavoriteAction from '../../components/ActionButtons/Favorite';
+import FavoriteButton from '../../components/ActionButtons/Favorite';
 import Loader from '../../components/Loader';
-import MovieActions from '../../components/ActionButtons/Watch';
+import WatchButtons from '../../components/ActionButtons/Watch';
 
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -12,33 +12,12 @@ import useAuth from '../../hooks/useAuth';
 import api from '../../services/api';
 import styles from './styles';
 import { errorAlert } from '../../utils/toastifyAlerts';
-
-interface Genre {
-	id: number;
-	name: string;
-}
-
-export interface MovieResult {
-	id: number;
-	title: string;
-	overview: string | null;
-	poster_path: string | undefined;
-	backdrop_path: string | undefined;
-	runtime: number | null;
-	genres: Genre[];
-}
-
-export interface UserMovie {
-	movieId: number;
-	userId: number;
-	favorite: boolean;
-	watched: boolean;
-	watchlist: boolean;
-}
+import { tmdbApi } from '../../services/tmdbApi';
+import { IUserMovieActions, TMDBMovieResult } from '../../utils/models';
 
 function Movie() {
-	const [movie, setMovie] = useState<MovieResult | null>(null);
-	const [userMovie, setUserMovie] = useState<UserMovie | null>(null);
+	const [movie, setMovie] = useState<TMDBMovieResult | null>(null);
+	const [userMovie, setUserMovie] = useState<IUserMovieActions | null>(null);
 
 	const { auth, signOut } = useAuth();
 	const { id } = useParams();
@@ -56,7 +35,7 @@ function Movie() {
 			setUserMovie(data);
 
 			try {
-				const { data } = await api.getMovie(Number(id));
+				const { data } = await tmdbApi.getMovie(Number(id));
 				setMovie(data);
 			} catch (error) {
 				errorAlert('External API error. Try again later');
@@ -93,7 +72,7 @@ function Movie() {
 				<ArrowBackOutlinedIcon sx={styles.icons} />
 			</Button>
 
-			<FavoriteAction movie={movie} userMovie={userMovie} />
+			<FavoriteButton movie={movie} userMovie={userMovie} />
 
 			<Box sx={styles.movieInfoBox}>
 				<Typography sx={styles.movieTitle}>{movie.title}</Typography>
@@ -110,7 +89,7 @@ function Movie() {
 					Duration: {movie.runtime} minutes
 				</Typography>
 
-				<MovieActions movie={movie} userMovie={userMovie} />
+				<WatchButtons movie={movie} userMovie={userMovie} />
 			</Box>
 		</Box>
 	);

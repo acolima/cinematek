@@ -1,13 +1,13 @@
 import dayjs from "dayjs";
 
 import { Box, Button, Rating, Typography } from "@mui/material";
-import { MoviesResult } from "../../pages/SearchPage";
 
 import styles from "./styles";
 import { useNavigate } from "react-router-dom";
+import { TMDBSearchResult } from "../../utils/models";
 
 interface Props {
-	movie: MoviesResult;
+	movie: TMDBSearchResult;
 }
 
 function MovieSearchResult({ movie }: Props) {

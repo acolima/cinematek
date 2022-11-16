@@ -7,14 +7,14 @@ import useAuth from "../../../hooks/useAuth";
 
 import api from "../../../services/api";
 import styles from "../styles";
-import { MovieResult, UserMovie } from "../../../pages/MoviePage";
+import { IUserMovieActions, TMDBMovieResult } from "../../../utils/models";
 
 interface Props {
-	userMovie: UserMovie | null;
-	movie: MovieResult;
+	userMovie: IUserMovieActions | null;
+	movie: TMDBMovieResult;
 }
 
-function FavoriteAction({ userMovie, movie }: Props) {
+function FavoriteButton({ userMovie, movie }: Props) {
 	const [favorite, setFavorite] = useState(userMovie?.favorite);
 
 	const { auth } = useAuth();
@@ -44,4 +44,4 @@ function FavoriteAction({ userMovie, movie }: Props) {
 	);
 }
 
-export default FavoriteAction;
+export default FavoriteButton;

@@ -2,10 +2,10 @@ import dayjs from "dayjs";
 
 import { Box, Typography } from "@mui/material";
 
-import { MoviesResult } from "../../pages/SearchPage";
+import { TMDBSearchResult } from "../../utils/models";
 
 interface AddedMoviesProps {
-	movie: MoviesResult;
+	movie: TMDBSearchResult;
 }
 
 function AddedMovies({ movie }: AddedMoviesProps) {

@@ -1,49 +1,39 @@
-import { Box, Grid, Typography } from '@mui/material'
-import Header from '../../components/Header'
-import Loader from '../../components/Loader'
-import MenuBar from '../../components/Menu'
+import { Box, Grid, Typography } from "@mui/material";
+import Header from "../../components/Header";
+import Loader from "../../components/Loader";
+import MenuBar from "../../components/Menu";
 
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth'
-import useMenu from '../../hooks/useMenu'
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import useMenu from "../../hooks/useMenu";
 
-import api from '../../services/api'
-import styles from './styles'
-
-interface MovieObject {
-	tmdbId: number
-	title: string
-	posterPath: string
-}
-
-export interface UserMoviesResult {
-	id: number
-	movies: MovieObject
-}
+import api from "../../services/api";
+import styles from "./styles";
+import { IMovie, UserMovie } from "../../utils/models";
 
 function UserPage() {
-	const [movies, setMovies] = useState<UserMoviesResult[] | null>(null)
-	const [loading, setLoading] = useState(true)
+	const [movies, setMovies] = useState<UserMovie[] | null>(null);
+	const [loading, setLoading] = useState(true);
 
-	const { category } = useParams()
-	const { showMenu } = useMenu()
-	const { auth } = useAuth()
+	const { category } = useParams();
+	const { showMenu } = useMenu();
+	const { auth } = useAuth();
 
 	useEffect(() => {
-		getUserMovies()
-		setLoading(true)
-		setMovies([])
+		getUserMovies();
+		setLoading(true);
+		setMovies([]);
 		// eslint-disable-next-line
-	}, [category])
+	}, [category]);
 
 	async function getUserMovies() {
 		try {
-			const { data } = await api.getUserMovies(auth?.token, category!)
-			setMovies(data)
-			setLoading(false)
+			const { data } = await api.getUserMovies(auth?.token, category!);
+			setMovies(data);
+			setLoading(false);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
 	}
 
@@ -60,20 +50,20 @@ function UserPage() {
 			<Grid container sx={styles.gridContainer}>
 				{movies?.map((movie) => (
 					<Grid key={movie.id} item xs={6} md={4}>
-						<Movie movie={movie.movies} />
+						<Movie movie={movie.movie} />
 					</Grid>
 				))}
 			</Grid>
 		</Box>
-	)
+	);
 }
 
 interface Props {
-	movie: MovieObject
+	movie: IMovie;
 }
 
 function Movie({ movie }: Props) {
-	let navigate = useNavigate()
+	let navigate = useNavigate();
 
 	return (
 		<Box
@@ -87,7 +77,7 @@ function Movie({ movie }: Props) {
 			/>
 			<Typography sx={styles.movieTitle}>{movie.title}</Typography>
 		</Box>
-	)
+	);
 }
 
 function NoMovies() {
@@ -95,7 +85,7 @@ function NoMovies() {
 		<Typography sx={styles.emptyListText}>
 			There is no movies in the list yet
 		</Typography>
-	)
+	);
 }
 
-export default UserPage
+export default UserPage;

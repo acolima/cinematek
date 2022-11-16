@@ -6,28 +6,28 @@ import {
 	DialogActions,
 	DialogTitle,
 	Typography
-} from '@mui/material'
-import ExpandLess from '@mui/icons-material/ExpandLess'
-import ExpandMore from '@mui/icons-material/ExpandMore'
+} from "@mui/material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
-import Movies from '../Movies'
+import Movies from "../Movies";
 
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import useAuth from '../../../hooks/useAuth'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 
-import api from '../../../services/api'
-import { errorAlert } from '../../../utils/toastifyAlerts'
-import { ListResult } from '../../../pages/ListsPage'
-import { UserMoviesResult } from '../../../pages/UserPage'
+import api from "../../../services/api";
+import { errorAlert } from "../../../utils/toastifyAlerts";
+import { ListResult } from "../../../pages/ListsPage";
+import { UserMovie } from "../../../utils/models";
 
 interface ListsProps {
-	list: ListResult
-	userWatchedMovies: UserMoviesResult[]
-	reloadLists: boolean
-	setReloadLists: React.Dispatch<React.SetStateAction<boolean>>
-	setLists: React.Dispatch<React.SetStateAction<ListResult[]>>
-	setLoading: React.Dispatch<React.SetStateAction<boolean>>
+	list: ListResult;
+	userWatchedMovies: UserMovie[];
+	reloadLists: boolean;
+	setReloadLists: React.Dispatch<React.SetStateAction<boolean>>;
+	setLists: React.Dispatch<React.SetStateAction<ListResult[]>>;
+	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function Lists({
@@ -38,23 +38,23 @@ function Lists({
 	setLists,
 	setLoading
 }: ListsProps) {
-	const listCover = list.listMovies[0].movies.posterPath
-	const [showDialog, setShowDialog] = useState(false)
-	const [open, setOpen] = useState(false)
-	const { auth, signOut } = useAuth()
+	const listCover = list.listMovies[0].movies.posterPath;
+	const [showDialog, setShowDialog] = useState(false);
+	const [open, setOpen] = useState(false);
+	const { auth, signOut } = useAuth();
 
-	let navigate = useNavigate()
+	let navigate = useNavigate();
 
 	async function handleDeleteList() {
 		try {
-			await api.deleteList(auth?.token, list.id)
-			setLoading(true)
-			setLists([])
-			setReloadLists(!reloadLists)
+			await api.deleteList(auth?.token, list.id);
+			setLoading(true);
+			setLists([]);
+			setReloadLists(!reloadLists);
 		} catch {
-			signOut()
-			errorAlert('Session expired. Please, log in again')
-			navigate('/')
+			signOut();
+			errorAlert("Session expired. Please, log in again");
+			navigate("/");
 		}
 	}
 
@@ -63,7 +63,7 @@ function Lists({
 			<Box sx={styles.listHeader} onClick={() => setOpen(!open)}>
 				<img
 					alt={list.name}
-					width='80'
+					width="80"
 					src={`https://image.tmdb.org/t/p/w400${listCover}`}
 				/>
 				<Typography sx={styles.listName}>{list.name}</Typography>
@@ -84,7 +84,7 @@ function Lists({
 				</Button>
 
 				<Dialog open={showDialog}>
-					<DialogTitle fontSize={'16px'}>Are you sure?</DialogTitle>
+					<DialogTitle fontSize={"16px"}>Are you sure?</DialogTitle>
 					<DialogActions>
 						<Button
 							sx={styles.dialogButton}
@@ -99,35 +99,35 @@ function Lists({
 				</Dialog>
 			</Collapse>
 		</Box>
-	)
+	);
 }
 
 const styles = {
 	container: {
-		width: '90%',
-		backgroundColor: '#fff',
-		display: 'flex',
-		flexDirection: 'column',
-		color: '#282D47',
-		padding: '15px'
+		width: "90%",
+		backgroundColor: "#fff",
+		display: "flex",
+		flexDirection: "column",
+		color: "#282D47",
+		padding: "15px"
 	},
 	listHeader: {
-		display: 'flex',
-		gap: '10px',
-		alignItems: 'center',
-		cursor: 'pointer'
+		display: "flex",
+		gap: "10px",
+		alignItems: "center",
+		cursor: "pointer"
 	},
 	listName: {
-		flex: '1',
-		fontFamily: 'Poppins',
-		fontSize: '18px'
+		flex: "1",
+		fontFamily: "Poppins",
+		fontSize: "18px"
 	},
 	deleteButton: {
-		width: '100%',
-		fontFamily: 'Poppins',
-		fontSize: '14px'
+		width: "100%",
+		fontFamily: "Poppins",
+		fontSize: "14px"
 	},
-	dialogButton: { fontSize: '0.9em' }
-}
+	dialogButton: { fontSize: "0.9em" }
+};
 
-export default Lists
+export default Lists;
