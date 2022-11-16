@@ -20,14 +20,14 @@ import useAuth from "../../hooks/useAuth";
 import api from "../../services/api";
 import { tmdbApi } from "../../services/tmdbApi";
 import styles from "./styles";
-import { MoviesResult } from "../SearchPage";
 import { errorAlert, successAlert } from "../../utils/toastifyAlerts";
+import { TMDBSearchResult } from "../../utils/models";
 
 function CreateList() {
 	const [movieName, setMovieName] = useState("");
 	const [listName, setListName] = useState("");
-	const [movies, setMovies] = useState<MoviesResult[] | null>(null);
-	const [addedMovies, setAddedMovies] = useState<MoviesResult[]>([]);
+	const [movies, setMovies] = useState<TMDBSearchResult[] | null>(null);
+	const [addedMovies, setAddedMovies] = useState<TMDBSearchResult[]>([]);
 
 	const [clearSearch, setClearSearch] = useState(false);
 
