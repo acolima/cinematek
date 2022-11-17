@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import MenuBar from "../../components/Menu";
 import useAuth from "../../hooks/useAuth";
@@ -10,6 +11,8 @@ import {
 	MovieContainer,
 	MovieList,
 	Page,
+	Section,
+	SectionHeader,
 	UserAvatar,
 	UserContainer
 } from "./styles";
@@ -19,8 +22,13 @@ function User() {
 	const { auth } = useAuth();
 
 	const [movies, setMovies] = useState<IUserMovie[]>([]);
+	const [favoriteMovies, setFavoriteMovies] = useState<IUserMovie[]>([]);
+	const [watchedMovies, setWatchedMovies] = useState<IUserMovie[]>([]);
+	const [watchlistMovies, setWatchlistMovies] = useState<IUserMovie[]>([]);
 
 	const [loading, setLoading] = useState(false);
+
+	let navigate = useNavigate();
 
 	useEffect(() => {
 		getMovies();
@@ -31,6 +39,9 @@ function User() {
 		try {
 			const { data } = await api.getAllUserMovies(auth?.token);
 			console.log(data);
+			setFavoriteMovies(data.filter((movie: any) => movie.favorite));
+			setWatchedMovies(data.filter((movie: any) => movie.watched));
+			setWatchlistMovies(data.filter((movie: any) => movie.watchlist));
 			setMovies(data);
 			setLoading(false);
 		} catch (error) {
@@ -48,39 +59,54 @@ function User() {
 				<UserAvatar alt={auth?.username} src={auth?.pictureUrl} />
 				<Box>
 					{movies.length === 0 ? (
-						<p>Nenhum filme adicionado</p>
+						<p>No added movies</p>
 					) : (
-						<p>{movies.length} filmes adicionados</p>
+						<p>{movies.length} added movies</p>
 					)}
 				</Box>
 			</UserContainer>
-			<Typography>Favorite</Typography>
-			<MovieList>
-				{movies
-					.filter((movie) => movie.favorite === true)
-					.slice(0, 3)
-					.map((m) => (
-						<Movie key={m.id} movie={m.movie} />
-					))}
-			</MovieList>
-			<Typography>Watched</Typography>
-			<MovieList>
-				{movies
-					.filter((movie) => movie.watched === true)
-					.slice(0, 3)
-					.map((m) => (
-						<Movie key={m.id} movie={m.movie} />
-					))}
-			</MovieList>
-			<Typography>Watchlist</Typography>
-			<MovieList>
-				{movies
-					.filter((movie) => movie.watchlist === true)
-					.slice(0, 3)
-					.map((m) => (
-						<Movie key={m.id} movie={m.movie} />
-					))}
-			</MovieList>
+
+			{favoriteMovies.length !== 0 && (
+				<>
+					<SectionHeader>
+						<Section>Favorite</Section>
+						<span onClick={() => navigate("/user/favorite")}>See all</span>
+					</SectionHeader>
+					<MovieList>
+						{favoriteMovies.slice(0, 4).map((m) => (
+							<Movie key={m.id} movie={m.movie} />
+						))}
+					</MovieList>
+				</>
+			)}
+
+			{watchedMovies.length !== 0 && (
+				<>
+					<SectionHeader>
+						<Section>Watched</Section>
+						<span onClick={() => navigate("/user/watched")}>See all</span>
+					</SectionHeader>
+					<MovieList>
+						{watchedMovies.slice(0, 4).map((m) => (
+							<Movie key={m.id} movie={m.movie} />
+						))}
+					</MovieList>
+				</>
+			)}
+
+			{watchlistMovies.length !== 0 && (
+				<>
+					<SectionHeader>
+						<Section>Watchlist</Section>
+						<span onClick={() => navigate("/user/watchlist")}>See all</span>
+					</SectionHeader>
+					<MovieList>
+						{watchlistMovies.slice(0, 4).map((m) => (
+							<Movie key={m.id} movie={m.movie} />
+						))}
+					</MovieList>
+				</>
+			)}
 		</Page>
 	);
 }

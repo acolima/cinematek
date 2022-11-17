@@ -3,15 +3,15 @@ import {
 	IconButton,
 	InputAdornment,
 	OutlinedInput,
-	Typography,
-} from '@mui/material';
-import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
-import { Menu, Search, SearchOutlined } from '@mui/icons-material';
+	Typography
+} from "@mui/material";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import { Menu, Search, SearchOutlined } from "@mui/icons-material";
 
-import { useNavigate } from 'react-router-dom';
-import useMenu from '../../hooks/useMenu';
+import { useNavigate } from "react-router-dom";
+import useMenu from "../../hooks/useMenu";
 
-import styles from './styles';
+import styles from "./styles";
 
 interface Props {
 	page?: string;
@@ -26,7 +26,7 @@ function Header({
 	movieName,
 	setMovieName,
 	handleSearch,
-	username,
+	username
 }: Props) {
 	const { toggleDrawer } = useMenu();
 
@@ -35,12 +35,12 @@ function Header({
 	function handleInputKeyDown(
 		e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
 	) {
-		if (e.key === 'Enter' && handleSearch) {
+		if (e.key === "Enter" && handleSearch) {
 			handleSearch()!;
 		}
 	}
 
-	if (page === 'search') {
+	if (page === "search") {
 		return (
 			<Box sx={styles.header}>
 				<ArrowBackOutlinedIcon sx={styles.icons} onClick={() => navigate(-1)} />
@@ -63,10 +63,10 @@ function Header({
 		);
 	}
 
-	if (page === 'main')
+	if (page === "main")
 		return (
 			<Box sx={styles.headerMain}>
-				<Search sx={styles.icons} onClick={() => navigate('/search')} />
+				<Search sx={styles.icons} onClick={() => navigate("/search")} />
 				<Typography sx={styles.logo}>CINEMATEK</Typography>
 				<Menu sx={styles.icons} onClick={toggleDrawer} />
 			</Box>
@@ -74,10 +74,7 @@ function Header({
 
 	return (
 		<Box sx={styles.header}>
-			<ArrowBackOutlinedIcon
-				sx={styles.icons}
-				onClick={() => navigate('/movies')}
-			/>
+			<ArrowBackOutlinedIcon sx={styles.icons} onClick={() => navigate(-1)} />
 			<Typography sx={styles.logo}>{page || username}</Typography>
 			<Menu sx={styles.icons} onClick={toggleDrawer} />
 		</Box>

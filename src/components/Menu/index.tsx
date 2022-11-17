@@ -8,29 +8,29 @@ import {
 	ListItemIcon,
 	ListItemText,
 	SwipeableDrawer,
-	Typography,
-} from '@mui/material';
-import { BookmarkAdd, Favorite } from '@mui/icons-material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+	Typography
+} from "@mui/material";
+import { BookmarkAdd, Favorite } from "@mui/icons-material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 
-import { useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
-import useMenu from '../../hooks/useMenu';
-import styles from './styles';
-import api from '../../services/api';
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import useMenu from "../../hooks/useMenu";
+import styles from "./styles";
+import api from "../../services/api";
 
 const menuOptions = [
-	{ icon: <HomeRoundedIcon />, name: 'Movies', path: 'movies' },
-	{ icon: <ListAltIcon />, name: 'Lists', path: 'lists' },
+	{ icon: <HomeRoundedIcon />, name: "Movies", path: "movies" },
+	{ icon: <ListAltIcon />, name: "Lists", path: "lists" }
 ];
 
 const moviesActions = [
-	{ icon: <Favorite />, name: 'Favorite', path: 'favorite' },
-	{ icon: <CheckCircleIcon />, name: 'Watched', path: 'watched' },
-	{ icon: <BookmarkAdd />, name: 'Watchlist', path: 'watchlist' },
+	{ icon: <Favorite />, name: "Favorite", path: "favorite" },
+	{ icon: <CheckCircleIcon />, name: "Watched", path: "watched" },
+	{ icon: <BookmarkAdd />, name: "Watchlist", path: "watchlist" }
 ];
 
 function MenuBar() {
@@ -43,7 +43,7 @@ function MenuBar() {
 	function handleLogout() {
 		api.validateToken(auth!.token).then(() => {
 			signOut();
-			navigate('/');
+			navigate("/");
 		});
 	}
 
@@ -57,7 +57,7 @@ function MenuBar() {
 			>
 				<Box sx={styles.listBox} onClick={toggleDrawer}>
 					<List>
-						<ListItem disablePadding onClick={() => navigate('/user')}>
+						<ListItem disablePadding onClick={() => navigate("/user")}>
 							<Avatar
 								alt={auth?.username}
 								src={auth?.pictureUrl}
@@ -91,7 +91,7 @@ function MenuBar() {
 							<ListItem
 								key={action.name}
 								disablePadding
-								onClick={() => navigate(`/movies/user/${action.path}`)}
+								onClick={() => navigate(`/user/${action.path}`)}
 							>
 								<ListItemButton>
 									<ListItemIcon>{action.icon}</ListItemIcon>

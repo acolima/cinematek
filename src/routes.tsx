@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
 	CreateList,
 	ListPage,
@@ -8,8 +8,8 @@ import {
 	SignIn,
 	SignUp,
 	User,
-	UserPage,
-} from './pages/index';
+	UserPage
+} from "./pages/index";
 
 function PageRoutes() {
 	return (
@@ -19,7 +19,7 @@ function PageRoutes() {
 				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/movies" element={<Main />} />
 				<Route path="/movies/:id" element={<Movie />} />
-				<Route path="/movies/user/:category" element={<UserPage />} />
+				<Route path="/user/:category" element={<UserPage />} />
 				<Route path="/search" element={<Search />} />
 				<Route path="/lists" element={<ListPage />} />
 				<Route path="/create-list" element={<CreateList />} />
