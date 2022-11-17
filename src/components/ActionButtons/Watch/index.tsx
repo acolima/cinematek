@@ -27,7 +27,8 @@ function WatchButtons({ userMovie, movie }: Props) {
 	const movieData = {
 		tmdbId: movie.id,
 		title: movie!.title,
-		posterPath: movie!.poster_path
+		posterPath: movie!.poster_path,
+		backdropPath: movie!.backdrop_path
 	};
 
 	async function handleWatchedClick() {

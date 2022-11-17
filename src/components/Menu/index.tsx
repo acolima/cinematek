@@ -10,8 +10,6 @@ import {
 	SwipeableDrawer,
 	Typography
 } from "@mui/material";
-import { BookmarkAdd, Favorite } from "@mui/icons-material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ListAltIcon from "@mui/icons-material/ListAlt";
@@ -25,12 +23,6 @@ import api from "../../services/api";
 const menuOptions = [
 	{ icon: <HomeRoundedIcon />, name: "Movies", path: "movies" },
 	{ icon: <ListAltIcon />, name: "Lists", path: "lists" }
-];
-
-const moviesActions = [
-	{ icon: <Favorite />, name: "Favorite", path: "favorite" },
-	{ icon: <CheckCircleIcon />, name: "Watched", path: "watched" },
-	{ icon: <BookmarkAdd />, name: "Watchlist", path: "watchlist" }
 ];
 
 function MenuBar() {
@@ -79,23 +71,6 @@ function MenuBar() {
 								<ListItemButton>
 									<ListItemIcon>{option.icon}</ListItemIcon>
 									<ListItemText primary={option.name} />
-								</ListItemButton>
-							</ListItem>
-						))}
-					</List>
-
-					<Divider />
-
-					<List>
-						{moviesActions.map((action) => (
-							<ListItem
-								key={action.name}
-								disablePadding
-								onClick={() => navigate(`/user/${action.path}`)}
-							>
-								<ListItemButton>
-									<ListItemIcon>{action.icon}</ListItemIcon>
-									<ListItemText primary={action.name} />
 								</ListItemButton>
 							</ListItem>
 						))}

@@ -1,4 +1,11 @@
-import { Box, Grid, Typography } from "@mui/material";
+import {
+	Box,
+	Collapse,
+	ImageList,
+	ImageListItem,
+	ImageListItemBar,
+	Typography
+} from "@mui/material";
 import Header from "../../components/Header";
 import Loader from "../../components/Loader";
 import MenuBar from "../../components/Menu";
@@ -45,15 +52,23 @@ function UserPage() {
 
 			{loading && <Loader />}
 
-			{movies?.length === 0 && !loading && <NoMovies />}
+			<ImageList
+				cols={1}
+				sx={{
+					paddingTop: "100px",
+					"@media (max-width: 600px)": {
+						paddingTop: "70px"
+					},
+					width: "90%",
+					margin: "0 auto"
+				}}
+			>
+				{movies?.length === 0 && !loading && <NoMovies />}
 
-			<Grid container sx={styles.gridContainer}>
 				{movies?.map((movie) => (
-					<Grid key={movie.id} item xs={6} md={4}>
-						<Movie movie={movie.movie} />
-					</Grid>
+					<Movie key={movie.id} movie={movie.movie} />
 				))}
-			</Grid>
+			</ImageList>
 		</Box>
 	);
 }
@@ -65,17 +80,27 @@ interface Props {
 function Movie({ movie }: Props) {
 	let navigate = useNavigate();
 
+	const [open, setOpen] = useState(false);
+
+	console.log(movie);
+
 	return (
-		<Box
-			sx={styles.movieBox}
-			onClick={() => navigate(`/movies/${movie.tmdbId}`)}
-		>
-			<img
-				src={`https://image.tmdb.org/t/p/w400/${movie.posterPath}`}
-				alt={movie.title}
-				style={styles.moviePoster}
-			/>
-			<Typography sx={styles.movieTitle}>{movie.title}</Typography>
+		<Box sx={{ backgroundColor: "rgba(0, 0, 0, 0.6)", marginBottom: "10px" }}>
+			<ImageListItem onClick={() => setOpen(!open)}>
+				<img
+					src={`https://image.tmdb.org/t/p/w400/${movie.backdropPath}`}
+					alt={movie.title}
+				/>
+				{!open && <ImageListItemBar title={movie.title} />}
+			</ImageListItem>
+
+			<Collapse
+				in={open}
+				timeout={0}
+				sx={{ backgroundColor: "", marginTop: "0px" }}
+			>
+				<p>{movie.title}</p>
+			</Collapse>
 		</Box>
 	);
 }
@@ -89,3 +114,5 @@ function NoMovies() {
 }
 
 export default UserPage;
+
+// onClick={() => navigate(`/movies/${movie.tmdbId}`)}

@@ -14,6 +14,7 @@ export interface IMovie {
 	tmdbId: number;
 	title: string | undefined;
 	posterPath: string | undefined;
+	backdropPath: string | undefined;
 }
 
 export type UserMovie = {

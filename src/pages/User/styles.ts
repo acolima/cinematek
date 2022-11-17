@@ -52,7 +52,8 @@ const MovieContainer = styled(Box)({
 	flexShrink: 0,
 	padding: "10px",
 	textAlign: "center",
-	borderRadius: "5px"
+	borderRadius: "5px",
+	overflow: "hidden"
 });
 
 const SectionHeader = styled(Box)({

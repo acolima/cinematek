@@ -25,7 +25,8 @@ function FavoriteButton({ userMovie, movie }: Props) {
 		await api.updateAction(auth?.token, "favorite", !favorite, {
 			tmdbId: movie.id,
 			title: movie!.title,
-			posterPath: movie!.poster_path
+			posterPath: movie!.poster_path,
+			backdropPath: movie!.backdrop_path
 		});
 		setFavorite(!favorite);
 	}
