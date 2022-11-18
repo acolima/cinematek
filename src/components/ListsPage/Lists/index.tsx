@@ -16,7 +16,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 
-import api from "../../../services/api";
+import { api } from "../../../services/api";
 import { errorAlert } from "../../../utils/toastifyAlerts";
 import { ListResult } from "../../../pages/ListsPage";
 import { UserMovie } from "../../../utils/models";

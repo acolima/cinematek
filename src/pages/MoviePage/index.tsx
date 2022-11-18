@@ -1,26 +1,26 @@
-import { Box, Button, Chip, Typography } from '@mui/material';
-import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-import FavoriteButton from '../../components/ActionButtons/Favorite';
-import Loader from '../../components/Loader';
-import WatchButtons from '../../components/ActionButtons/Watch';
+import { Box, Button, Chip, Typography } from "@mui/material";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
+import { FavoriteButton, Loader, WatchButtons } from "../../components";
 
-import api from '../../services/api';
-import styles from './styles';
-import { errorAlert } from '../../utils/toastifyAlerts';
-import { tmdbApi } from '../../services/tmdbApi';
-import { IUserMovieActions, TMDBMovieResult } from '../../utils/models';
+import { api, tmdbApi } from "../../services";
+import { useAuth, useMovies } from "../../hooks";
+import { errorAlert } from "../../utils/toastifyAlerts";
+import { TMDBMovieResult } from "../../utils/models";
+import styles from "./styles";
 
 function Movie() {
 	const [movie, setMovie] = useState<TMDBMovieResult | null>(null);
-	const [userMovie, setUserMovie] = useState<IUserMovieActions | null>(null);
+	const [favorite, setFavorite] = useState(false);
+	const [watched, setWatched] = useState(false);
+	const [watchlist, setWatchlist] = useState(false);
 
 	const { auth, signOut } = useAuth();
 	const { id } = useParams();
+	const { movies } = useMovies();
 
 	let navigate = useNavigate();
 
@@ -31,20 +31,36 @@ function Movie() {
 
 	async function getMovie() {
 		try {
-			const { data } = await api.findUserMovie(auth?.token, Number(id));
-			setUserMovie(data);
-
+			await api.validateToken(auth?.token);
+			moviesStatus();
 			try {
 				const { data } = await tmdbApi.getMovie(Number(id));
 				setMovie(data);
 			} catch (error) {
-				errorAlert('External API error. Try again later');
+				errorAlert("External API error. Try again later");
 			}
 		} catch (error) {
 			signOut();
-			errorAlert('Session expired. Please, log in again');
-			navigate('/');
+			errorAlert("Session expired. Please, log in again");
+			navigate("/");
 		}
+	}
+
+	function moviesStatus() {
+		const isFavorite = movies.find(
+			(m) => m.movie.tmdbId === Number(id) && m.favorite
+		);
+		setFavorite(isFavorite ? true : false);
+
+		const wasWatched = movies.find(
+			(m) => m.movie.tmdbId === Number(id) && m.watched
+		);
+		setWatched(wasWatched ? true : false);
+
+		const inWatchlist = movies.find(
+			(m) => m.movie.tmdbId === Number(id) && m.watchlist
+		);
+		setWatchlist(inWatchlist ? true : false);
 	}
 
 	if (!movie) return <Loader />;
@@ -72,7 +88,7 @@ function Movie() {
 				<ArrowBackOutlinedIcon sx={styles.icons} />
 			</Button>
 
-			<FavoriteButton movie={movie} userMovie={userMovie} />
+			<FavoriteButton movie={movie} isFavorite={favorite} />
 
 			<Box sx={styles.movieInfoBox}>
 				<Typography sx={styles.movieTitle}>{movie.title}</Typography>
@@ -89,7 +105,11 @@ function Movie() {
 					Duration: {movie.runtime} minutes
 				</Typography>
 
-				<WatchButtons movie={movie} userMovie={userMovie} />
+				<WatchButtons
+					movie={movie}
+					wasWatched={watched}
+					inWatchlist={watchlist}
+				/>
 			</Box>
 		</Box>
 	);

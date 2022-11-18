@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-import api from "../../services/api";
+import { api } from "../../services/api";
 import styles from "./styles";
 import { errorAlert } from "../../utils/toastifyAlerts";
 import { UserMovie } from "../../utils/models";

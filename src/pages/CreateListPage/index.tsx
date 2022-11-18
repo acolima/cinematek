@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-import api from "../../services/api";
+import { api } from "../../services/api";
 import { tmdbApi } from "../../services/tmdbApi";
 import styles from "./styles";
 import { errorAlert, successAlert } from "../../utils/toastifyAlerts";
@@ -63,7 +63,8 @@ function CreateList() {
 			return {
 				tmdbId: movie.id,
 				title: movie.title,
-				posterPath: movie.poster_path
+				posterPath: movie.poster_path,
+				backdropPath: ""
 			};
 		});
 

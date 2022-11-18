@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
 	Alert,
 	Box,
@@ -7,58 +10,55 @@ import {
 	Link,
 	OutlinedInput,
 	Typography
-} from '@mui/material'
-import { LoadingButton } from '@mui/lab'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth'
-
-import api from '../../services/api'
-import styles from '../SignUpPage/styles'
-import tmdbLogo from '../../assets/tmdb.svg'
+import { api } from "../../services/api";
+import { useAuth } from "../../hooks";
+import styles from "../SignUpPage/styles";
+import tmdbLogo from "../../assets/tmdb.svg";
 
 function SignIn() {
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
 
-	const [showPassword, setShowPassword] = useState(false)
-	const [loading, setLoading] = useState(false)
-	const [disabled, setDisabled] = useState(false)
+	const [showPassword, setShowPassword] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [disabled, setDisabled] = useState(false);
 
-	const [passwordLengthError, setPasswordLengthError] = useState(false)
-	const [requestError, setRequestError] = useState('')
+	const [passwordLengthError, setPasswordLengthError] = useState(false);
+	const [requestError, setRequestError] = useState("");
 
-	const { signIn } = useAuth()
-	let navigate = useNavigate()
+	const { signIn } = useAuth();
+	let navigate = useNavigate();
 
 	useEffect(() => {
-		if (localStorage.getItem('auth')) navigate('/movies')
-	}, [navigate])
+		if (localStorage.getItem("auth")) navigate("/movies");
+	}, [navigate]);
 
 	async function handleSubmit(e: React.FormEvent) {
-		e.preventDefault()
-		setPasswordLengthError(false)
-		setLoading(true)
-		setDisabled(true)
-		setRequestError('')
+		e.preventDefault();
+		setPasswordLengthError(false);
+		setLoading(true);
+		setDisabled(true);
+		setRequestError("");
 
 		if (password.length < 6) {
-			setPasswordLengthError(true)
-			setLoading(false)
-			setDisabled(false)
-			return
+			setPasswordLengthError(true);
+			setLoading(false);
+			setDisabled(false);
+			return;
 		}
 
 		try {
-			const { data } = await api.signIn({ username, password })
-			signIn(data)
-			navigate('/movies')
+			const { data } = await api.signIn({ username, password });
+			signIn(data);
+			navigate("/movies");
 		} catch (error: Error | any) {
-			setRequestError(error.response.data)
-			setLoading(false)
-			setDisabled(false)
+			setRequestError(error.response.data);
+			setLoading(false);
+			setDisabled(false);
 		}
 	}
 
@@ -69,9 +69,9 @@ function SignIn() {
 					<Typography sx={styles.logo}>CINEMATEK</Typography>
 				</Box>
 
-				<Box component='form' onSubmit={handleSubmit} sx={styles.form}>
+				<Box component="form" onSubmit={handleSubmit} sx={styles.form}>
 					<OutlinedInput
-						placeholder='Username'
+						placeholder="Username"
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
 						sx={styles.input}
@@ -87,16 +87,16 @@ function SignIn() {
 						disabled={disabled}
 					/>
 					{passwordLengthError && (
-						<Alert severity='error'>
+						<Alert severity="error">
 							Password must be at least 6 caracters long
 						</Alert>
 					)}
 
-					{requestError && <Alert severity='error'>{requestError}</Alert>}
+					{requestError && <Alert severity="error">{requestError}</Alert>}
 
 					<LoadingButton
-						variant='outlined'
-						type='submit'
+						variant="outlined"
+						type="submit"
 						loading={loading}
 						sx={styles.loadingButton}
 					>
@@ -105,8 +105,8 @@ function SignIn() {
 
 					<Button
 						sx={styles.button}
-						size='small'
-						onClick={() => navigate('/sign-up')}
+						size="small"
+						onClick={() => navigate("/sign-up")}
 					>
 						First time? Create an account
 					</Button>
@@ -115,24 +115,24 @@ function SignIn() {
 
 			<Link
 				sx={styles.creditsBox}
-				href='https://www.themoviedb.org/?language=pt-BR'
-				target='_blank'
+				href="https://www.themoviedb.org/?language=pt-BR"
+				target="_blank"
 			>
 				<Typography sx={styles.credits}>
 					All the data are provided by The Movie Database
 				</Typography>
-				<img src={tmdbLogo} alt='TMBD Logo' width='60' />
+				<img src={tmdbLogo} alt="TMBD Logo" width="60" />
 			</Link>
 		</Box>
-	)
+	);
 }
 
 interface Props {
-	password: string
-	setPassword: React.Dispatch<React.SetStateAction<string>>
-	showPassword: boolean
-	setShowPassword: React.Dispatch<React.SetStateAction<boolean>>
-	disabled: boolean
+	password: string;
+	setPassword: React.Dispatch<React.SetStateAction<string>>;
+	showPassword: boolean;
+	setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
+	disabled: boolean;
 }
 
 function PasswordInput({
@@ -145,18 +145,18 @@ function PasswordInput({
 	return (
 		<>
 			<OutlinedInput
-				placeholder='Password'
+				placeholder="Password"
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
-				type={showPassword ? 'text' : 'password'}
+				type={showPassword ? "text" : "password"}
 				sx={styles.input}
 				disabled={disabled}
 				required
 				endAdornment={
-					<InputAdornment position='end'>
+					<InputAdornment position="end">
 						<IconButton
 							onClick={() => setShowPassword(!showPassword)}
-							edge='end'
+							edge="end"
 						>
 							{showPassword ? <VisibilityOff /> : <Visibility />}
 						</IconButton>
@@ -164,7 +164,7 @@ function PasswordInput({
 				}
 			/>
 		</>
-	)
+	);
 }
 
-export default SignIn
+export default SignIn;

@@ -1,10 +1,10 @@
-import axios from 'axios';
-import { IMovie, INewList, IUserData } from '../utils/models';
+import axios from "axios";
+import { IMovie, INewList, IUserData } from "../utils/models";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const baseAPI = axios.create({
-	baseURL: BASE_URL,
+	baseURL: BASE_URL
 });
 
 function createConfig(token: string | undefined) {
@@ -12,17 +12,17 @@ function createConfig(token: string | undefined) {
 }
 
 async function signUp(body: IUserData) {
-	await baseAPI.post('/users/register', body);
+	await baseAPI.post("/users/register", body);
 }
 
-function signIn(body: Omit<IUserData, 'pictureUrl'>) {
-	return baseAPI.post('/sign-in', body);
+function signIn(body: Omit<IUserData, "pictureUrl">) {
+	return baseAPI.post("/sign-in", body);
 }
 
 function validateToken(token: string | undefined) {
 	const config = createConfig(token);
 
-	return baseAPI.post('/token', {}, config);
+	return baseAPI.post("/token", {}, config);
 }
 
 async function findUserMovie(token: string | undefined, id: number) {
@@ -56,12 +56,12 @@ function updateAction(
 
 function getLists(token: string | undefined) {
 	const config = createConfig(token);
-	return baseAPI.get('/users/lists', config);
+	return baseAPI.get("/users/lists", config);
 }
 
 function createList(token: string | undefined, list: INewList) {
 	const config = createConfig(token);
-	return baseAPI.post('/users/lists/create', list, config);
+	return baseAPI.post("/users/lists/create", list, config);
 }
 
 function deleteList(token: string | undefined, listId: number) {
@@ -69,7 +69,7 @@ function deleteList(token: string | undefined, listId: number) {
 	return baseAPI.delete(`/users/lists/${listId}/delete`, config);
 }
 
-const api = {
+export const api = {
 	createList,
 	deleteList,
 	findUserMovie,
@@ -79,7 +79,5 @@ const api = {
 	signIn,
 	signUp,
 	updateAction,
-	validateToken,
+	validateToken
 };
-
-export default api;

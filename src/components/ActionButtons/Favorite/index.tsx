@@ -1,35 +1,48 @@
+import { useEffect, useState } from "react";
+
 import { Button } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
-import { useEffect, useState } from "react";
-import useAuth from "../../../hooks/useAuth";
-
-import api from "../../../services/api";
+import { api } from "../../../services/api";
+import { useAuth, useMovies } from "../../../hooks";
+import { TMDBMovieResult } from "../../../utils/models";
 import styles from "../styles";
-import { IUserMovieActions, TMDBMovieResult } from "../../../utils/models";
 
 interface Props {
-	userMovie: IUserMovieActions | null;
 	movie: TMDBMovieResult;
+	isFavorite: boolean;
 }
 
-function FavoriteButton({ userMovie, movie }: Props) {
-	const [favorite, setFavorite] = useState(userMovie?.favorite);
+function FavoriteButton({ movie, isFavorite }: Props) {
+	const [favorite, setFavorite] = useState(isFavorite);
 
 	const { auth } = useAuth();
+	const { saveUserMovies } = useMovies();
 
 	useEffect(() => {}, [favorite]);
 
 	async function handleFavoriteClick() {
-		await api.updateAction(auth?.token, "favorite", !favorite, {
-			tmdbId: movie.id,
-			title: movie!.title,
-			posterPath: movie!.poster_path,
-			backdropPath: movie!.backdrop_path
-		});
-		setFavorite(!favorite);
+		try {
+			await api.updateAction(auth?.token, "favorite", !favorite, {
+				tmdbId: movie.id,
+				title: movie!.title,
+				posterPath: movie!.poster_path,
+				backdropPath: movie!.backdrop_path
+			});
+			setFavorite(!favorite);
+		} catch (error) {
+			console.log(error);
+		}
+
+		try {
+			const { data } = await api.getAllUserMovies(auth?.token);
+			saveUserMovies(data);
+		} catch (error) {
+			console.log(error);
+		}
 	}
+
 	return (
 		<>
 			{favorite ? (

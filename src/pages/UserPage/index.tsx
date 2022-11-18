@@ -1,46 +1,45 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
 import {
 	Box,
 	Collapse,
 	ImageList,
 	ImageListItem,
-	ImageListItemBar,
-	Typography
+	ImageListItemBar
 } from "@mui/material";
-import Header from "../../components/Header";
-import Loader from "../../components/Loader";
-import MenuBar from "../../components/Menu";
 
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import useMenu from "../../hooks/useMenu";
+import { Header, Menu } from "../../components";
 
-import api from "../../services/api";
-import styles from "./styles";
+import { api } from "../../services/api";
+import { useAuth, useMenu, useMovies } from "../../hooks";
 import { IMovie, UserMovie } from "../../utils/models";
+import { errorAlert } from "../../utils/toastifyAlerts";
+import styles from "./styles";
 
 function UserPage() {
-	const [movies, setMovies] = useState<UserMovie[] | null>(null);
-	const [loading, setLoading] = useState(true);
+	const [movies, setMovies] = useState<UserMovie[]>([]);
 
 	const { category } = useParams();
+
+	const { auth, signOut } = useAuth();
 	const { showMenu } = useMenu();
-	const { auth } = useAuth();
+	const { movies: userMovies } = useMovies();
+
+	let navigate = useNavigate();
 
 	useEffect(() => {
-		getUserMovies();
-		setLoading(true);
-		setMovies([]);
-		// eslint-disable-next-line
+		validateToken();
 	}, [category]);
 
-	async function getUserMovies() {
+	async function validateToken() {
 		try {
-			const { data } = await api.getUserMovies(auth?.token, category!);
-			setMovies(data);
-			setLoading(false);
+			await api.validateToken(auth?.token);
+			setMovies(userMovies.filter((movie: any) => movie[category!]));
 		} catch (error) {
-			console.log(error);
+			signOut();
+			errorAlert("Session expired. Please, log in again");
+			navigate("/");
 		}
 	}
 
@@ -48,9 +47,7 @@ function UserPage() {
 		<Box sx={styles.page}>
 			<Header page={category!} />
 
-			{showMenu && <MenuBar />}
-
-			{loading && <Loader />}
+			{showMenu && <Menu />}
 
 			<ImageList
 				cols={1}
@@ -63,8 +60,6 @@ function UserPage() {
 					margin: "0 auto"
 				}}
 			>
-				{movies?.length === 0 && !loading && <NoMovies />}
-
 				{movies?.map((movie) => (
 					<Movie key={movie.id} movie={movie.movie} />
 				))}
@@ -81,8 +76,6 @@ function Movie({ movie }: Props) {
 	let navigate = useNavigate();
 
 	const [open, setOpen] = useState(false);
-
-	console.log(movie);
 
 	return (
 		<Box sx={{ backgroundColor: "rgba(0, 0, 0, 0.6)", marginBottom: "10px" }}>
@@ -102,14 +95,6 @@ function Movie({ movie }: Props) {
 				<p>{movie.title}</p>
 			</Collapse>
 		</Box>
-	);
-}
-
-function NoMovies() {
-	return (
-		<Typography sx={styles.emptyListText}>
-			There is no movies in the list yet
-		</Typography>
 	);
 }
 

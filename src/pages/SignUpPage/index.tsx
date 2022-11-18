@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
 	Alert,
 	Box,
@@ -6,63 +9,60 @@ import {
 	InputAdornment,
 	OutlinedInput,
 	Typography
-} from '@mui/material'
-import { LoadingButton } from '@mui/lab'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
-import api from '../../services/api'
-import styles from './styles'
-import { successAlert } from '../../utils/toastifyAlerts'
+import { api } from "../../services";
+import { successAlert } from "../../utils/toastifyAlerts";
+import styles from "./styles";
 
 function SignUp() {
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
-	const [passwordConfirmation, setPasswordConfirmation] = useState('')
-	const [pictureUrl, setPictureUrl] = useState('')
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordConfirmation, setPasswordConfirmation] = useState("");
+	const [pictureUrl, setPictureUrl] = useState("");
 
-	const [showPassword, setShowPassword] = useState(false)
-	const [loading, setLoading] = useState(false)
-	const [disabled, setDisabled] = useState(false)
+	const [showPassword, setShowPassword] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [disabled, setDisabled] = useState(false);
 
-	const [passwordLengthError, setPasswordLengthError] = useState(false)
-	const [passwordMismatchError, setPasswordMismatchError] = useState(false)
-	const [requestError, setRequestError] = useState('')
+	const [passwordLengthError, setPasswordLengthError] = useState(false);
+	const [passwordMismatchError, setPasswordMismatchError] = useState(false);
+	const [requestError, setRequestError] = useState("");
 
-	let navigate = useNavigate()
+	let navigate = useNavigate();
 
 	async function handleSubmit(e: React.FormEvent) {
-		e.preventDefault()
-		setPasswordLengthError(false)
-		setPasswordMismatchError(false)
-		setLoading(true)
-		setDisabled(true)
-		setRequestError('')
+		e.preventDefault();
+		setPasswordLengthError(false);
+		setPasswordMismatchError(false);
+		setLoading(true);
+		setDisabled(true);
+		setRequestError("");
 
 		if (password.length < 6) {
-			setPasswordLengthError(true)
-			setLoading(false)
-			setDisabled(false)
-			return
+			setPasswordLengthError(true);
+			setLoading(false);
+			setDisabled(false);
+			return;
 		}
 
 		if (password !== passwordConfirmation) {
-			setPasswordMismatchError(true)
-			setLoading(false)
-			setDisabled(false)
-			return
+			setPasswordMismatchError(true);
+			setLoading(false);
+			setDisabled(false);
+			return;
 		}
 
 		try {
-			await api.signUp({ username, password, pictureUrl })
-			navigate('/')
-			successAlert('Account created!')
+			await api.signUp({ username, password, pictureUrl });
+			navigate("/");
+			successAlert("Account created!");
 		} catch (error: Error | any) {
-			setRequestError(error.response.data)
-			setLoading(false)
-			setDisabled(false)
+			setRequestError(error.response.data);
+			setLoading(false);
+			setDisabled(false);
 		}
 	}
 
@@ -72,12 +72,12 @@ function SignUp() {
 				<Typography sx={styles.logo}>CINEMATEK</Typography>
 			</Box>
 
-			{requestError && <Alert severity='error'>{requestError}</Alert>}
+			{requestError && <Alert severity="error">{requestError}</Alert>}
 
-			<Box component='form' sx={styles.form} onSubmit={handleSubmit}>
+			<Box component="form" sx={styles.form} onSubmit={handleSubmit}>
 				<OutlinedInput
-					placeholder='Username'
-					type='text'
+					placeholder="Username"
+					type="text"
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
 					sx={styles.input}
@@ -93,7 +93,7 @@ function SignUp() {
 					disabled={disabled}
 				/>
 				{passwordLengthError && (
-					<Alert severity='error'>
+					<Alert severity="error">
 						Password must be at least 6 caracters long
 					</Alert>
 				)}
@@ -106,12 +106,12 @@ function SignUp() {
 					disabled={disabled}
 				/>
 				{passwordMismatchError && (
-					<Alert severity='error'>Passwords are different</Alert>
+					<Alert severity="error">Passwords are different</Alert>
 				)}
 
 				<OutlinedInput
-					placeholder='URL of profile picture'
-					type='url'
+					placeholder="URL of profile picture"
+					type="url"
 					sx={styles.input}
 					required
 					value={pictureUrl}
@@ -119,27 +119,27 @@ function SignUp() {
 				/>
 
 				<LoadingButton
-					variant='outlined'
-					type='submit'
+					variant="outlined"
+					type="submit"
 					loading={loading}
 					sx={styles.loadingButton}
 				>
 					Sign Up
 				</LoadingButton>
-				<Button sx={styles.button} size='small' onClick={() => navigate('/')}>
-					Already have an account? Log In{' '}
+				<Button sx={styles.button} size="small" onClick={() => navigate("/")}>
+					Already have an account? Log In{" "}
 				</Button>
 			</Box>
 		</Box>
-	)
+	);
 }
 
 interface Props {
-	password: string
-	setPassword: React.Dispatch<React.SetStateAction<string>>
-	showPassword: boolean
-	setShowPassword: React.Dispatch<React.SetStateAction<boolean>>
-	disabled: boolean
+	password: string;
+	setPassword: React.Dispatch<React.SetStateAction<string>>;
+	showPassword: boolean;
+	setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
+	disabled: boolean;
 }
 
 function PasswordInput({
@@ -152,18 +152,18 @@ function PasswordInput({
 	return (
 		<>
 			<OutlinedInput
-				placeholder='Password'
+				placeholder="Password"
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
-				type={showPassword ? 'text' : 'password'}
+				type={showPassword ? "text" : "password"}
 				sx={styles.input}
 				required
 				disabled={disabled}
 				endAdornment={
-					<InputAdornment position='end'>
+					<InputAdornment position="end">
 						<IconButton
 							onClick={() => setShowPassword(!showPassword)}
-							edge='end'
+							edge="end"
 						>
 							{showPassword ? <VisibilityOff /> : <Visibility />}
 						</IconButton>
@@ -171,7 +171,7 @@ function PasswordInput({
 				}
 			/>
 		</>
-	)
+	);
 }
 
-export default SignUp
+export default SignUp;

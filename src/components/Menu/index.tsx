@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import {
 	Avatar,
 	Box,
@@ -14,18 +16,16 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 
-import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import useMenu from "../../hooks/useMenu";
+import { api } from "../../services/api";
+import { useAuth, useMenu } from "../../hooks";
 import styles from "./styles";
-import api from "../../services/api";
 
 const menuOptions = [
 	{ icon: <HomeRoundedIcon />, name: "Movies", path: "movies" },
 	{ icon: <ListAltIcon />, name: "Lists", path: "lists" }
 ];
 
-function MenuBar() {
+function Menu() {
 	const { toggleDrawer, showMenu } = useMenu();
 
 	const { auth, signOut } = useAuth();
@@ -94,4 +94,4 @@ function MenuBar() {
 	);
 }
 
-export default MenuBar;
+export default Menu;

@@ -1,12 +1,12 @@
-import { useContext } from 'react'
-import { MenuContext } from '../contexts/menuDrawerContext'
+import { useContext } from "react";
+import { MenuContext } from "../contexts/menuDrawerContext";
 
 export default function useMenu() {
-	const menuContext = useContext(MenuContext)
+	const menuContext = useContext(MenuContext);
 
 	if (!menuContext) {
-		throw new Error('useAuth must be used inside a AuthContext Provider')
+		throw new Error("useMenu must be used inside a MenuContext Provider");
 	}
 
-	return menuContext
+	return menuContext;
 }

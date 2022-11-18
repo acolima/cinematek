@@ -1,19 +1,13 @@
-import { Box, Typography } from "@mui/material";
-
-import Header from "../../components/Header";
-import Loader from "../../components/Loader";
-import MenuBar from "../../components/Menu";
-import MoviesList from "../../components/MoviesList";
-import SearchIcon from "../../components/SearchIcon";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import useMenu from "../../hooks/useMenu";
 
-import api from "../../services/api";
+import { Box, Typography } from "@mui/material";
+
+import { Header, Loader, Menu, MoviesList, SearchIcon } from "../../components";
+
+import { api, tmdbApi } from "../../services";
+import { useAuth, useMenu } from "../../hooks";
 import { errorAlert } from "../../utils/toastifyAlerts";
-import { tmdbApi } from "../../services/tmdbApi";
 import { TMDBSearchResult } from "../../utils/models";
 
 function Search() {
@@ -58,7 +52,7 @@ function Search() {
 				setMovieName={setMovieName}
 				handleSearch={handleSearch}
 			/>
-			{showMenu && <MenuBar />}
+			{showMenu && <Menu />}
 
 			{loading ? (
 				<Loader />
