@@ -1,16 +1,27 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { Box, Chip } from "@mui/material";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 
-import { FavoriteButton, Loader, WatchButtons } from "../../components";
+import { Favorite, Loader, Watch } from "../../components";
 
 import { api, tmdbApi } from "../../services";
 import { useAuth, useMovies } from "../../hooks";
 import { errorAlert } from "../../utils/toastifyAlerts";
 import { TMDBMovieResult } from "../../utils/models";
-import styles from "./styles";
+import {
+	ArrowBackButton,
+	FavoriteButton,
+	Genres,
+	MovieInfo,
+	Overview,
+	Page,
+	Poster,
+	Runtime,
+	Title,
+	styles
+} from "./styles";
 
 function Movie() {
 	const [movie, setMovie] = useState<TMDBMovieResult | null>(null);
@@ -66,52 +77,49 @@ function Movie() {
 	if (!movie) return <Loader />;
 
 	return (
-		<Box sx={styles.page}>
+		<Page>
 			{movie.backdrop_path ? (
 				<img
 					src={`https://image.tmdb.org/t/p/w400/${movie?.backdrop_path}`}
 					alt={movie.title}
-					style={styles.movieBackdrop}
+					style={styles.backdrop}
 				/>
 			) : (
 				<Box sx={styles.noBackdrop}></Box>
 			)}
-			<Box sx={styles.moviePoster}>
+
+			<Poster>
 				<img
 					src={`https://image.tmdb.org/t/p/w400/${movie?.poster_path}`}
 					alt={movie.title}
 					width="150"
 				/>
-			</Box>
+			</Poster>
 
-			<Button sx={styles.backButton} onClick={() => navigate(-1)}>
+			<ArrowBackButton onClick={() => navigate(-1)}>
 				<ArrowBackOutlinedIcon sx={styles.icons} />
-			</Button>
+			</ArrowBackButton>
 
-			<FavoriteButton movie={movie} isFavorite={favorite} />
+			<FavoriteButton>
+				<Favorite movie={movie} isFavorite={favorite} />
+			</FavoriteButton>
 
-			<Box sx={styles.movieInfoBox}>
-				<Typography sx={styles.movieTitle}>{movie.title}</Typography>
+			<MovieInfo>
+				<Title>{movie.title}</Title>
 
-				<Box sx={styles.movieGenres}>
+				<Genres>
 					{movie.genres.map((genre) => (
 						<Chip label={genre.name} color="primary" key={genre.id} />
 					))}
-				</Box>
+				</Genres>
 
-				<Typography sx={styles.movieOverview}>{movie.overview}</Typography>
+				<Overview>{movie.overview}</Overview>
 
-				<Typography sx={styles.movieRuntime}>
-					Duration: {movie.runtime} minutes
-				</Typography>
+				<Runtime>Duration: {movie.runtime} minutes</Runtime>
 
-				<WatchButtons
-					movie={movie}
-					wasWatched={watched}
-					inWatchlist={watchlist}
-				/>
-			</Box>
-		</Box>
+				<Watch movie={movie} wasWatched={watched} inWatchlist={watchlist} />
+			</MovieInfo>
+		</Page>
 	);
 }
 

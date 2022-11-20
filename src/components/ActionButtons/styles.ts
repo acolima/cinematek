@@ -1,15 +1,10 @@
 const styles = {
-	favoriteButton: {
-		position: "absolute",
-		top: "10px",
-		right: "10px"
-	},
 	icons: {
 		fontSize: "2.5em",
 		cursor: "pointer",
 		color: "#fff"
 	},
-	list: {
+	buttons: {
 		display: "flex",
 		justifyContent: "space-evenly"
 	}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Button, List } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -17,7 +17,7 @@ interface Props {
 	inWatchlist: boolean;
 }
 
-function WatchButtons({ movie, wasWatched, inWatchlist }: Props) {
+function Watch({ movie, wasWatched, inWatchlist }: Props) {
 	const [watched, setWatched] = useState(wasWatched);
 	const [watchlist, setWatchlist] = useState(inWatchlist);
 
@@ -68,7 +68,7 @@ function WatchButtons({ movie, wasWatched, inWatchlist }: Props) {
 	}
 
 	return (
-		<List sx={styles.list}>
+		<Box sx={styles.buttons}>
 			{watched ? (
 				<Button onClick={handleWatchedClick}>
 					<CheckCircleIcon sx={styles.icons} />
@@ -88,8 +88,8 @@ function WatchButtons({ movie, wasWatched, inWatchlist }: Props) {
 					<BookmarkAddOutlinedIcon sx={styles.icons} />
 				</Button>
 			)}
-		</List>
+		</Box>
 	);
 }
 
-export default WatchButtons;
+export default Watch;

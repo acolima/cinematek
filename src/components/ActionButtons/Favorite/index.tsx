@@ -14,7 +14,7 @@ interface Props {
 	isFavorite: boolean;
 }
 
-function FavoriteButton({ movie, isFavorite }: Props) {
+function Favorite({ movie, isFavorite }: Props) {
 	const [favorite, setFavorite] = useState(isFavorite);
 
 	const { auth } = useAuth();
@@ -58,4 +58,4 @@ function FavoriteButton({ movie, isFavorite }: Props) {
 	);
 }
 
-export default FavoriteButton;
+export default Favorite;
