@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import dayjs from "dayjs";
 
 import {
 	Box,
-	Collapse,
-	ImageList,
+	IconButton,
 	ImageListItem,
 	ImageListItemBar
 } from "@mui/material";
+
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import InfoIcon from "@mui/icons-material/Info";
 
 import { Header, Menu } from "../../components";
 
 import { api } from "../../services/api";
 import { useAuth, useMenu, useMovies } from "../../hooks";
-import { IMovie, UserMovie } from "../../utils/models";
+import { IUserMovie } from "../../utils/models";
 import { errorAlert } from "../../utils/toastifyAlerts";
-import styles from "./styles";
+import { Collapse, CollapseHeader, Movies, Page, WatchedMovie } from "./styles";
 
 function UserPage() {
-	const [movies, setMovies] = useState<UserMovie[]>([]);
+	const [movies, setMovies] = useState<IUserMovie[]>([]);
 
 	const { category } = useParams();
 
@@ -44,60 +48,78 @@ function UserPage() {
 	}
 
 	return (
-		<Box sx={styles.page}>
+		<Page>
 			<Header page={category!} />
 
 			{showMenu && <Menu />}
 
-			<ImageList
-				cols={1}
-				sx={{
-					paddingTop: "100px",
-					"@media (max-width: 600px)": {
-						paddingTop: "70px"
-					},
-					width: "90%",
-					margin: "0 auto"
-				}}
-			>
+			<Movies cols={1} gap={15}>
 				{movies?.map((movie) => (
-					<Movie key={movie.id} movie={movie.movie} />
+					<Movie key={movie.id} userMovie={movie} />
 				))}
-			</ImageList>
-		</Box>
+			</Movies>
+		</Page>
 	);
 }
 
 interface Props {
-	movie: IMovie;
+	userMovie: IUserMovie;
 }
 
-function Movie({ movie }: Props) {
+function Movie({ userMovie }: Props) {
 	let navigate = useNavigate();
+
+	const movie = userMovie.movie;
+	const favorite = userMovie.favorite;
+	const watched = userMovie.watched;
+	const watchlist = userMovie.watchlist;
+
+	const modifiedDate = dayjs(userMovie.modifyAt).format("MMMM DD, YYYY");
 
 	const [open, setOpen] = useState(false);
 
+	function handleOpenCollapse() {
+		if (!watchlist) setOpen(!open);
+	}
+
 	return (
-		<Box sx={{ backgroundColor: "rgba(0, 0, 0, 0.6)", marginBottom: "10px" }}>
-			<ImageListItem onClick={() => setOpen(!open)}>
+		<Box>
+			<ImageListItem onClick={() => handleOpenCollapse()}>
 				<img
 					src={`https://image.tmdb.org/t/p/w400/${movie.backdropPath}`}
 					alt={movie.title}
 				/>
-				{!open && <ImageListItemBar title={movie.title} />}
+				{!open && (
+					<ImageListItemBar
+						title={movie.title}
+						actionIcon={
+							<IconButton
+								sx={{ color: "rgba(255, 255, 255, 0.54)" }}
+								onClick={() => navigate(`/movies/${movie.tmdbId}`)}
+							>
+								<InfoIcon />
+							</IconButton>
+						}
+					/>
+				)}
 			</ImageListItem>
 
-			<Collapse
-				in={open}
-				timeout={0}
-				sx={{ backgroundColor: "", marginTop: "0px" }}
-			>
-				<p>{movie.title}</p>
-			</Collapse>
+			{!watchlist && (
+				<Collapse in={open} timeout={0}>
+					<CollapseHeader>
+						<p>{movie.title}</p>
+						{favorite && <FavoriteIcon />}
+					</CollapseHeader>
+					{watched && (
+						<WatchedMovie>
+							<CheckCircleIcon />
+							<p>Watched in {modifiedDate}</p>
+						</WatchedMovie>
+					)}
+				</Collapse>
+			)}
 		</Box>
 	);
 }
 
 export default UserPage;
-
-// onClick={() => navigate(`/movies/${movie.tmdbId}`)}

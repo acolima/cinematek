@@ -46,11 +46,11 @@ function Favorite({ movie, isFavorite }: Props) {
 	return (
 		<>
 			{favorite ? (
-				<Button sx={styles.favoriteButton} onClick={handleFavoriteClick}>
+				<Button onClick={handleFavoriteClick}>
 					<FavoriteIcon sx={styles.icons} />
 				</Button>
 			) : (
-				<Button sx={styles.favoriteButton} onClick={handleFavoriteClick}>
+				<Button onClick={handleFavoriteClick}>
 					<FavoriteBorderOutlinedIcon sx={styles.icons} />
 				</Button>
 			)}
