@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 
 import { Box, Button } from "@mui/material";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
-import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import {
+	BookmarkAdd,
+	BookmarkAddOutlined,
+	CheckCircle,
+	CheckCircleOutline
+} from "@mui/icons-material";
+import styled from "@emotion/styled";
 
 import { api } from "../../../services/api";
 import { useAuth, useMovies } from "../../../hooks";
 import { TMDBMovieResult } from "../../../utils/models";
-import styles from "../styles";
 
 interface Props {
 	movie: TMDBMovieResult;
@@ -68,28 +70,38 @@ function Watch({ movie, wasWatched, inWatchlist }: Props) {
 	}
 
 	return (
-		<Box sx={styles.buttons}>
+		<Buttons>
 			{watched ? (
-				<Button onClick={handleWatchedClick}>
-					<CheckCircleIcon sx={styles.icons} />
-				</Button>
+				<IconButton onClick={handleWatchedClick}>
+					<CheckCircle fontSize="large" />
+				</IconButton>
 			) : (
-				<Button onClick={handleWatchedClick}>
-					<CheckCircleOutlineIcon sx={styles.icons} />
-				</Button>
+				<IconButton onClick={handleWatchedClick}>
+					<CheckCircleOutline fontSize="large" />
+				</IconButton>
 			)}
 
 			{watchlist ? (
-				<Button disabled={watched} onClick={handleWatchlistClick}>
-					<BookmarkAddIcon sx={styles.icons} />
-				</Button>
+				<IconButton disabled={watched} onClick={handleWatchlistClick}>
+					<BookmarkAdd fontSize="large" />
+				</IconButton>
 			) : (
-				<Button disabled={watched} onClick={handleWatchlistClick}>
-					<BookmarkAddOutlinedIcon sx={styles.icons} />
-				</Button>
+				<IconButton disabled={watched} onClick={handleWatchlistClick}>
+					<BookmarkAddOutlined fontSize="large" />
+				</IconButton>
 			)}
-		</Box>
+		</Buttons>
 	);
 }
+
+const Buttons = styled(Box)({
+	display: "flex",
+	justifyContent: "space-evenly"
+});
+
+const IconButton = styled(Button)({
+	cursor: "pointer",
+	color: "#fff"
+});
 
 export default Watch;

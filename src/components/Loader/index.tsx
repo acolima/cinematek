@@ -1,13 +1,21 @@
 import { TailSpin } from "react-loader-spinner";
+
 import { Container } from "@mui/material";
-import styles from "./styles";
+import styled from "@emotion/styled";
 
 function Loader() {
 	return (
-		<Container sx={styles.container}>
+		<LoaderContainer>
 			<TailSpin color="#790918" height="90" width="90" />
-		</Container>
+		</LoaderContainer>
 	);
 }
+
+const LoaderContainer = styled(Container)({
+	height: "80vh",
+	display: "flex",
+	alignItems: "center",
+	justifyContent: "center"
+});
 
 export default Loader;

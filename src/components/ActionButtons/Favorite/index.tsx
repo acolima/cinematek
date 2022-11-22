@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import styled from "@emotion/styled";
 
 import { api } from "../../../services/api";
 import { useAuth, useMovies } from "../../../hooks";
 import { TMDBMovieResult } from "../../../utils/models";
-import styles from "../styles";
 
 interface Props {
 	movie: TMDBMovieResult;
@@ -46,16 +46,21 @@ function Favorite({ movie, isFavorite }: Props) {
 	return (
 		<>
 			{favorite ? (
-				<Button onClick={handleFavoriteClick}>
-					<FavoriteIcon sx={styles.icons} />
-				</Button>
+				<IconButton onClick={handleFavoriteClick}>
+					<FavoriteIcon fontSize="large" />
+				</IconButton>
 			) : (
-				<Button onClick={handleFavoriteClick}>
-					<FavoriteBorderOutlinedIcon sx={styles.icons} />
-				</Button>
+				<IconButton onClick={handleFavoriteClick}>
+					<FavoriteBorderOutlinedIcon />
+				</IconButton>
 			)}
 		</>
 	);
 }
+
+const IconButton = styled(Button)({
+	cursor: "pointer",
+	color: "#fff"
+});
 
 export default Favorite;
