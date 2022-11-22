@@ -1,17 +1,10 @@
-import {
-	Box,
-	IconButton,
-	InputAdornment,
-	OutlinedInput,
-	Typography
-} from "@mui/material";
-import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import { Menu, Search, SearchOutlined } from "@mui/icons-material";
-
 import { useNavigate } from "react-router-dom";
-import useMenu from "../../hooks/useMenu";
 
-import styles from "./styles";
+import { IconButton, InputAdornment } from "@mui/material";
+import { ArrowBackOutlined, Menu, Search } from "@mui/icons-material";
+
+import useMenu from "../../hooks/useMenu";
+import { Button, Container, PageTitle, SearchInput } from "./styles";
 
 interface Props {
 	page?: string;
@@ -30,8 +23,59 @@ function Header({
 }: Props) {
 	const { toggleDrawer } = useMenu();
 
+	const mainPage = page === "main";
+	const searchPage = page === "search";
+	const otherPages = page !== "main" && page !== "search";
+
 	let navigate = useNavigate();
 
+	return (
+		<Container>
+			{!mainPage && (
+				<Button onClick={() => navigate(-1)}>
+					<ArrowBackOutlined fontSize="large" />
+				</Button>
+			)}
+
+			{mainPage && <MainHeader />}
+
+			{searchPage && (
+				<SearchHeader
+					movieName={movieName}
+					setMovieName={setMovieName}
+					handleSearch={handleSearch}
+				/>
+			)}
+
+			{otherPages && <PageTitle>{page || username}</PageTitle>}
+
+			<Button onClick={toggleDrawer}>
+				<Menu fontSize="large" />
+			</Button>
+		</Container>
+	);
+}
+
+function MainHeader() {
+	let navigate = useNavigate();
+
+	return (
+		<>
+			<Button onClick={() => navigate("/search")}>
+				<Search fontSize="large" />
+			</Button>
+			<PageTitle>CINEMATEK</PageTitle>
+		</>
+	);
+}
+
+interface Props {
+	movieName?: string;
+	setMovieName?: React.Dispatch<React.SetStateAction<string>>;
+	handleSearch?: () => void;
+}
+
+function SearchHeader({ movieName, setMovieName, handleSearch }: Props) {
 	function handleInputKeyDown(
 		e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
 	) {
@@ -40,44 +84,20 @@ function Header({
 		}
 	}
 
-	if (page === "search") {
-		return (
-			<Box sx={styles.header}>
-				<ArrowBackOutlinedIcon sx={styles.icons} onClick={() => navigate(-1)} />
-				<OutlinedInput
-					sx={styles.searchBar}
-					placeholder="Search for movies"
-					value={movieName}
-					onChange={(e) => setMovieName!(e.target.value)}
-					onKeyDown={(e) => handleInputKeyDown(e)}
-					endAdornment={
-						<InputAdornment position="end">
-							<IconButton onClick={handleSearch} edge="end">
-								<SearchOutlined />
-							</IconButton>
-						</InputAdornment>
-					}
-				/>
-				<Menu sx={styles.icons} onClick={toggleDrawer} />
-			</Box>
-		);
-	}
-
-	if (page === "main")
-		return (
-			<Box sx={styles.headerMain}>
-				<Search sx={styles.icons} onClick={() => navigate("/search")} />
-				<Typography sx={styles.logo}>CINEMATEK</Typography>
-				<Menu sx={styles.icons} onClick={toggleDrawer} />
-			</Box>
-		);
-
 	return (
-		<Box sx={styles.header}>
-			<ArrowBackOutlinedIcon sx={styles.icons} onClick={() => navigate(-1)} />
-			<Typography sx={styles.logo}>{page || username}</Typography>
-			<Menu sx={styles.icons} onClick={toggleDrawer} />
-		</Box>
+		<SearchInput
+			placeholder="Search for movies"
+			value={movieName}
+			onChange={(e) => setMovieName!(e.target.value)}
+			onKeyDown={(e) => handleInputKeyDown(e)}
+			endAdornment={
+				<InputAdornment position="end">
+					<IconButton onClick={handleSearch} edge="end">
+						<Search />
+					</IconButton>
+				</InputAdornment>
+			}
+		/>
 	);
 }
 

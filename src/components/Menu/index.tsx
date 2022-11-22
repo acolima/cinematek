@@ -1,28 +1,24 @@
 import { useNavigate } from "react-router-dom";
 
 import {
-	Avatar,
-	Box,
 	Divider,
 	List,
 	ListItem,
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
-	SwipeableDrawer,
-	Typography
+	SwipeableDrawer
 } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import ListAltIcon from "@mui/icons-material/ListAlt";
+import { HomeRounded, ListAlt, Logout, Search } from "@mui/icons-material";
 
 import { api } from "../../services/api";
 import { useAuth, useMenu } from "../../hooks";
-import styles from "./styles";
+import { Avatar, Container, Username } from "./styles";
 
 const menuOptions = [
-	{ icon: <HomeRoundedIcon />, name: "Movies", path: "movies" },
-	{ icon: <ListAltIcon />, name: "Lists", path: "lists" }
+	{ icon: <HomeRounded />, name: "Home", path: "movies" },
+	{ icon: <ListAlt />, name: "Lists", path: "lists" },
+	{ icon: <Search />, name: "Search", path: "search" }
 ];
 
 function Menu() {
@@ -40,22 +36,18 @@ function Menu() {
 	}
 
 	return (
-		<div>
+		<>
 			<SwipeableDrawer
 				anchor="right"
 				open={showMenu}
 				onClose={toggleDrawer}
 				onOpen={toggleDrawer}
 			>
-				<Box sx={styles.listBox} onClick={toggleDrawer}>
+				<Container onClick={toggleDrawer}>
 					<List>
 						<ListItem disablePadding onClick={() => navigate("/user")}>
-							<Avatar
-								alt={auth?.username}
-								src={auth?.pictureUrl}
-								sx={styles.avatar}
-							/>
-							<Typography sx={styles.username}>{auth?.username}</Typography>
+							<Avatar alt={auth?.username} src={auth?.pictureUrl} />
+							<Username>{auth?.username}</Username>
 						</ListItem>
 					</List>
 
@@ -82,15 +74,15 @@ function Menu() {
 						<ListItem disablePadding onClick={handleLogout}>
 							<ListItemButton>
 								<ListItemIcon>
-									<LogoutIcon />
+									<Logout />
 								</ListItemIcon>
 								<ListItemText primary="Logout" />
 							</ListItemButton>
 						</ListItem>
 					</List>
-				</Box>
+				</Container>
 			</SwipeableDrawer>
-		</div>
+		</>
 	);
 }
 
