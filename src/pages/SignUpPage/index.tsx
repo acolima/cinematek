@@ -1,21 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-	Alert,
-	Box,
-	Button,
-	IconButton,
-	InputAdornment,
-	OutlinedInput,
-	Typography
-} from "@mui/material";
+import { Alert, Button, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { LoadingButton } from "@mui/lab";
 
 import { api } from "../../services";
 import { successAlert } from "../../utils/toastifyAlerts";
-import styles from "./styles";
+import {
+	Form,
+	Input,
+	LoadingButton,
+	Logo,
+	LogoContainer,
+	Page
+} from "./styles";
 
 function SignUp() {
 	const [username, setUsername] = useState("");
@@ -67,20 +65,19 @@ function SignUp() {
 	}
 
 	return (
-		<Box sx={styles.page}>
-			<Box sx={styles.logoBox}>
-				<Typography sx={styles.logo}>CINEMATEK</Typography>
-			</Box>
+		<Page>
+			<LogoContainer>
+				<Logo>CINEMATEK</Logo>
+			</LogoContainer>
 
 			{requestError && <Alert severity="error">{requestError}</Alert>}
 
-			<Box component="form" sx={styles.form} onSubmit={handleSubmit}>
-				<OutlinedInput
+			<Form component="form" onSubmit={handleSubmit}>
+				<Input
 					placeholder="Username"
 					type="text"
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
-					sx={styles.input}
 					disabled={disabled}
 					required
 				/>
@@ -109,28 +106,26 @@ function SignUp() {
 					<Alert severity="error">Passwords are different</Alert>
 				)}
 
-				<OutlinedInput
+				<Input
 					placeholder="URL of profile picture"
 					type="url"
-					sx={styles.input}
 					required
 					value={pictureUrl}
 					onChange={(e) => setPictureUrl(e.target.value)}
 				/>
 
-				<LoadingButton
-					variant="outlined"
-					type="submit"
-					loading={loading}
-					sx={styles.loadingButton}
-				>
+				<LoadingButton variant="outlined" type="submit" loading={loading}>
 					Sign Up
 				</LoadingButton>
-				<Button sx={styles.button} size="small" onClick={() => navigate("/")}>
+				<Button
+					sx={{ color: "#fff" }}
+					size="small"
+					onClick={() => navigate("/")}
+				>
 					Already have an account? Log In{" "}
 				</Button>
-			</Box>
-		</Box>
+			</Form>
+		</Page>
 	);
 }
 
@@ -151,12 +146,11 @@ function PasswordInput({
 }: Props) {
 	return (
 		<>
-			<OutlinedInput
+			<Input
 				placeholder="Password"
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
 				type={showPassword ? "text" : "password"}
-				sx={styles.input}
 				required
 				disabled={disabled}
 				endAdornment={
