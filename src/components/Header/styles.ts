@@ -8,17 +8,16 @@ interface Props {
 const Container = styled(Box)(({ main }: Props) => ({
 	display: "flex",
 	alignItems: "center",
-	justifyContent: "space-around",
-	margin: "0 auto",
+	justifyContent: "space-between",
 	position: "fixed",
 	zIndex: 1,
+	padding: "0 50px",
 	background: "#0c174b",
-	width: main ? "100%" : "60%",
+	width: "70%",
 	height: "70px",
 	"@media (max-width: 600px)": {
 		margin: "0",
 		width: "100%",
-		justifyContent: "space-between",
 		padding: "10px"
 	}
 }));

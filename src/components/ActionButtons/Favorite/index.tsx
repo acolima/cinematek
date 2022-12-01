@@ -51,7 +51,7 @@ function Favorite({ movie, isFavorite }: Props) {
 				</IconButton>
 			) : (
 				<IconButton onClick={handleFavoriteClick}>
-					<FavoriteBorderOutlinedIcon />
+					<FavoriteBorderOutlinedIcon fontSize="large" />
 				</IconButton>
 			)}
 		</>

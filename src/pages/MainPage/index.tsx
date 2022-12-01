@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-	Box,
-	ImageList,
-	ImageListItem,
-	ImageListItemBar,
-	Typography
-} from "@mui/material";
+import { ImageListItem, ImageListItemBar } from "@mui/material";
 
 import { Header, Loader, Menu } from "../../components";
 
@@ -15,7 +9,7 @@ import { api, tmdbApi } from "../../services";
 import { useAuth, useMenu, useMovies } from "../../hooks";
 import { errorAlert } from "../../utils/toastifyAlerts";
 import { TMDBMoviesResult } from "../../utils/models";
-import styles from "./styles";
+import { Page, PageTitle, TrendingMovies } from "./styles";
 
 function MainPage() {
 	const [movies, setMovies] = useState<TMDBMoviesResult[] | null>(null);
@@ -58,37 +52,34 @@ function MainPage() {
 
 	if (window.screen.width > 600) columns = 2;
 
-	if (!movies)
-		return (
-			<Box sx={styles.flex}>
-				<Header page="main" />
-				<Loader />
-			</Box>
-		);
-
 	return (
-		<>
+		<Page>
 			<Header page="main" />
+
 			{showMenu && <Menu />}
-			<Box sx={styles.page}>
-				<Typography sx={styles.title}>Trending</Typography>
-				<ImageList cols={columns} sx={styles.imageList}>
-					{movies.map((movie) => (
-						<ImageListItem
-							key={movie.id}
-							sx={styles.imageListItem}
-							onClick={() => navigate(`/movies/${movie.id}`)}
-						>
-							<img
-								src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
-								alt={movie.title}
-							/>
-							<ImageListItemBar title={movie.title} />
-						</ImageListItem>
-					))}
-				</ImageList>
-			</Box>
-		</>
+
+			{!movies && <Loader />}
+
+			<TrendingMovies cols={columns}>
+				<ImageListItem key="Subheader" cols={2}>
+					<PageTitle>Trending</PageTitle>
+				</ImageListItem>
+				{<></>}
+				{movies?.map((movie) => (
+					<ImageListItem
+						key={movie.id}
+						sx={{ cursor: "pointer" }}
+						onClick={() => navigate(`/movies/${movie.id}`)}
+					>
+						<img
+							src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
+							alt={movie.title}
+						/>
+						<ImageListItemBar title={movie.title} />
+					</ImageListItem>
+				))}
+			</TrendingMovies>
+		</Page>
 	);
 }
 
