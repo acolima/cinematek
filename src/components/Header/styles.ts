@@ -1,26 +1,21 @@
 import styled from "@emotion/styled";
 import { Box, IconButton, OutlinedInput, Typography } from "@mui/material";
 
-interface Props {
-	main?: boolean;
-}
-
-const Container = styled(Box)(({ main }: Props) => ({
+const Container = styled(Box)({
+	boxSizing: "border-box",
 	display: "flex",
 	alignItems: "center",
 	justifyContent: "space-between",
 	position: "fixed",
 	zIndex: 1,
-	padding: "0 50px",
+	padding: 0,
 	background: "#0c174b",
-	width: "70%",
+	width: "60%",
 	height: "70px",
 	"@media (max-width: 600px)": {
-		margin: "0",
-		width: "100%",
-		padding: "10px"
+		width: "100%"
 	}
-}));
+});
 
 const Button = styled(IconButton)({
 	cursor: "pointer",

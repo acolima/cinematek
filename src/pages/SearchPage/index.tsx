@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Typography } from "@mui/material";
-
-import { Header, Loader, Menu, MoviesList, SearchIcon } from "../../components";
+import {
+	Header,
+	Loader,
+	Menu,
+	MoviesList,
+	SearchPageIcon
+} from "../../components";
 
 import { api, tmdbApi } from "../../services";
 import { useAuth, useMenu } from "../../hooks";
 import { errorAlert } from "../../utils/toastifyAlerts";
 import { TMDBSearchResult } from "../../utils/models";
+import { MoviesContainer, Page } from "./styles";
 
 function Search() {
 	const [movieName, setMovieName] = useState("");
@@ -40,56 +45,38 @@ function Search() {
 	}
 
 	function handleSearch() {
-		setLoading(true);
-		getMovies();
+		if (movieName) {
+			setLoading(true);
+			getMovies();
+		}
 	}
 
 	return (
-		<Box sx={styles.page}>
+		<Page>
 			<Header
 				page="search"
 				movieName={movieName}
 				setMovieName={setMovieName}
 				handleSearch={handleSearch}
 			/>
+
 			{showMenu && <Menu />}
 
 			{loading ? (
 				<Loader />
 			) : (
-				<Box sx={styles.results}>
+				<MoviesContainer>
 					{movies?.length === 0 && (
-						<Typography sx={styles.resultsText}>No results found</Typography>
+						<SearchPageIcon message={"No results found"} />
 					)}
 
-					{!movies && <SearchIcon />}
+					{!movies && <SearchPageIcon message={"Type the name of the movie"} />}
 
 					{movies?.length !== 0 && movies && <MoviesList movies={movies} />}
-				</Box>
+				</MoviesContainer>
 			)}
-		</Box>
+		</Page>
 	);
 }
-
-const styles = {
-	page: {
-		width: "60%",
-		margin: "0 auto",
-		"@media (max-width: 600px)": {
-			margin: "0",
-			width: "100%"
-		}
-	},
-	results: {
-		paddingTop: "70px"
-	},
-	resultsText: {
-		paddingBottom: "10px",
-		fontFamily: "Poppins",
-		fontSize: "16px",
-		width: "90%",
-		margin: "0 auto"
-	}
-};
 
 export default Search;

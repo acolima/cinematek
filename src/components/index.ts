@@ -3,7 +3,7 @@ import Header from "./Header";
 import Loader from "./Loader";
 import Menu from "./Menu";
 import MoviesList from "./MoviesList";
-import SearchIcon from "./SearchIcon";
+import SearchPageIcon from "./SearchPageIcon";
 import Watch from "./ActionButtons/Watch";
 
-export { Favorite, Header, Loader, Menu, MoviesList, SearchIcon, Watch };
+export { Favorite, Header, Loader, Menu, MoviesList, SearchPageIcon, Watch };

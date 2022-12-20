@@ -64,7 +64,6 @@ function MainPage() {
 				<ImageListItem key="Subheader" cols={2}>
 					<PageTitle>Trending</PageTitle>
 				</ImageListItem>
-				{<></>}
 				{movies?.map((movie) => (
 					<ImageListItem
 						key={movie.id}

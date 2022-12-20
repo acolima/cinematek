@@ -120,7 +120,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-	content: '';
+	content: "";
 	content: none;
 }
 table {
@@ -139,7 +139,7 @@ a {
 }
 .root {
 	background-color: #0c174b;
-	font-family: 'Poppins', sans-serif;
+	font-family: "Poppins", sans-serif;
 	color: #fff;
 	min-height: 100vh;
 	min-width: 100vw;

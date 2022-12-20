@@ -15,11 +15,9 @@ const Page = styled(Box)({
 });
 
 const TrendingMovies = styled(ImageList)({
-	paddingTop: "70px",
+	marginTop: "70px",
 	width: "100%",
-	"@media (max-width: 600px)": {
-		width: "95%"
-	}
+	padding: "10px"
 });
 
 const PageTitle = styled(Typography)({

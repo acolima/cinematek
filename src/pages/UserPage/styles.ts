@@ -1,7 +1,6 @@
 import { Box, ImageList, styled } from "@mui/material";
 
 const Page = styled(Box)({
-	backgroundColor: "red",
 	width: "60%",
 	display: "flex",
 	flexDirection: "column",
