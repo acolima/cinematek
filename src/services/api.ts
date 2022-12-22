@@ -11,8 +11,15 @@ function createConfig(token: string | undefined) {
 	return { headers: { Authorization: `Bearer ${token}` } };
 }
 
-async function signUp(body: IUserData) {
-	await baseAPI.post("/users/register", body);
+async function signUp(body: IUserData, pictureFile: File) {
+	const formData = new FormData();
+
+	formData.append("file", pictureFile);
+	formData.append("data", JSON.stringify(body));
+
+	await baseAPI.post("/users/register", formData, {
+		responseType: "text"
+	});
 }
 
 function signIn(body: Omit<IUserData, "pictureUrl">) {

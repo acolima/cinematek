@@ -22,7 +22,7 @@ const LogoContainer = styled(Box)({
 	alignItems: "center",
 	justifyContent: "center",
 	width: "100%",
-	height: "215px"
+	height: "170px"
 });
 
 const Logo = styled(Typography)({
@@ -36,6 +36,7 @@ const Logo = styled(Typography)({
 const Form = styled(Box)({
 	display: "flex",
 	flexDirection: "column",
+	alignItems: "center",
 	gap: "15px",
 	width: "400px",
 	"@media (max-width:601px)": {
@@ -74,6 +75,29 @@ const Credits = styled(Link)({
 	color: "#fff"
 });
 
+const ProfilePicture = styled.div({
+	backgroundColor: "#282D47",
+	width: "90px",
+	height: "90px",
+	borderRadius: "50%",
+	position: "relative",
+	input: { display: "none" },
+	label: {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)"
+	},
+	div: {
+		img: {
+			width: "90px",
+			height: "90px",
+			objectFit: "cover",
+			borderRadius: "50%"
+		}
+	}
+});
+
 export {
 	Button as LoadingButton,
 	Container,
@@ -82,5 +106,6 @@ export {
 	Input,
 	Logo,
 	LogoContainer,
-	Page
+	Page,
+	ProfilePicture
 };

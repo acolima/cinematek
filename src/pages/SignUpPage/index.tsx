@@ -12,14 +12,20 @@ import {
 	LoadingButton,
 	Logo,
 	LogoContainer,
-	Page
+	Page,
+	ProfilePicture
 } from "./styles";
+
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 
 function SignUp() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordConfirmation, setPasswordConfirmation] = useState("");
 	const [pictureUrl, setPictureUrl] = useState("");
+
+	const [pictureFile, setPictureFile] = useState<File>();
+	const [picturePreview, setPicturePreview] = useState<string>("");
 
 	const [showPassword, setShowPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -54,7 +60,7 @@ function SignUp() {
 		}
 
 		try {
-			await api.signUp({ username, password, pictureUrl });
+			await api.signUp({ username, password }, pictureFile!);
 			navigate("/");
 			successAlert("Account created!");
 		} catch (error: Error | any) {
@@ -62,6 +68,19 @@ function SignUp() {
 			setLoading(false);
 			setDisabled(false);
 		}
+	}
+
+	function uploadPicture(e: React.ChangeEvent<HTMLInputElement> | undefined) {
+		const file = e?.target.files![0];
+		setPictureFile(file);
+
+		const reader = new FileReader();
+
+		reader.onloadend = () => {
+			setPicturePreview(reader.result!.toString());
+		};
+
+		reader.readAsDataURL(file!);
 	}
 
 	return (
@@ -73,6 +92,19 @@ function SignUp() {
 			{requestError && <Alert severity="error">{requestError}</Alert>}
 
 			<Form component="form" onSubmit={handleSubmit}>
+				<ProfilePicture>
+					<label htmlFor="picture">
+						<AddAPhotoIcon />
+					</label>
+					<input type="file" id="picture" onChange={(e) => uploadPicture(e)} />
+
+					{picturePreview && (
+						<div>
+							<img src={picturePreview} alt="preview" />
+						</div>
+					)}
+				</ProfilePicture>
+
 				<Input
 					placeholder="Username"
 					type="text"
@@ -105,14 +137,6 @@ function SignUp() {
 				{passwordMismatchError && (
 					<Alert severity="error">Passwords are different</Alert>
 				)}
-
-				<Input
-					placeholder="URL of profile picture"
-					type="url"
-					required
-					value={pictureUrl}
-					onChange={(e) => setPictureUrl(e.target.value)}
-				/>
 
 				<LoadingButton variant="outlined" type="submit" loading={loading}>
 					Sign Up

@@ -1,7 +1,6 @@
 export interface IUserData {
 	username: string;
 	password: string;
-	pictureUrl: string;
 }
 
 type Actions = {
