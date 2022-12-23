@@ -9,7 +9,7 @@ import {
 	ListItemText,
 	SwipeableDrawer
 } from "@mui/material";
-import { HomeRounded, ListAlt, Logout, Search } from "@mui/icons-material";
+import { HomeRounded, Logout, Search } from "@mui/icons-material";
 
 import { api } from "../../services/api";
 import { useAuth, useMenu } from "../../hooks";
@@ -17,7 +17,6 @@ import { Avatar, Container, Username } from "./styles";
 
 const menuOptions = [
 	{ icon: <HomeRounded />, name: "Home", path: "movies" },
-	{ icon: <ListAlt />, name: "Lists", path: "lists" },
 	{ icon: <Search />, name: "Search", path: "search" }
 ];
 

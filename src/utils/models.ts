@@ -27,11 +27,6 @@ export type IUserMovieActions = Actions & {
 	userId: number;
 };
 
-export interface INewList {
-	name: string;
-	movies: IMovie[];
-}
-
 export type IUserMovie = Actions & UserMovie;
 
 export interface TMDBMovieResult {

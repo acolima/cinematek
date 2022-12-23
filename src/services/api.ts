@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IMovie, INewList, IUserData } from "../utils/models";
+import { IMovie, IUserData } from "../utils/models";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -61,27 +61,9 @@ function updateAction(
 	return baseAPI.post(`/movies/${action}/${status}`, movieData, config);
 }
 
-function getLists(token: string | undefined) {
-	const config = createConfig(token);
-	return baseAPI.get("/users/lists", config);
-}
-
-function createList(token: string | undefined, list: INewList) {
-	const config = createConfig(token);
-	return baseAPI.post("/users/lists/create", list, config);
-}
-
-function deleteList(token: string | undefined, listId: number) {
-	const config = createConfig(token);
-	return baseAPI.delete(`/users/lists/${listId}/delete`, config);
-}
-
 export const api = {
-	createList,
-	deleteList,
 	findUserMovie,
 	getAllUserMovies,
-	getLists,
 	getUserMovies,
 	signIn,
 	signUp,

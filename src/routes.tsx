@@ -1,7 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
-	CreateList,
-	ListPage,
 	Main,
 	Movie,
 	Search,
@@ -21,8 +19,6 @@ function PageRoutes() {
 				<Route path="/movies/:id" element={<Movie />} />
 				<Route path="/user/:category" element={<UserPage />} />
 				<Route path="/search" element={<Search />} />
-				<Route path="/lists" element={<ListPage />} />
-				<Route path="/create-list" element={<CreateList />} />
 				<Route path="/user" element={<User />} />
 			</Routes>
 		</BrowserRouter>
