@@ -51,6 +51,7 @@ const Input = styled(OutlinedInput)({
 	lineHeight: "24px",
 	color: "rgba(0, 0, 0, 1)",
 	background: "#C4C4C4",
+	width: "100%",
 	borderRadius: "20px"
 });
 
@@ -61,6 +62,7 @@ const Button = styled(LoadingButton)({
 	border: "0",
 	color: "#fff",
 	fontFamily: "Poppins",
+	width: "100%",
 	"&:hover": {
 		opacity: "0.8",
 		background: "#282D47"
@@ -75,7 +77,7 @@ const Credits = styled(Link)({
 	color: "#fff"
 });
 
-const ProfilePicture = styled.div({
+const PictureContainer = styled.div({
 	backgroundColor: "#282D47",
 	width: "90px",
 	height: "90px",
@@ -107,5 +109,5 @@ export {
 	Logo,
 	LogoContainer,
 	Page,
-	ProfilePicture
+	PictureContainer
 };

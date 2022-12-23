@@ -13,7 +13,7 @@ import {
 	Logo,
 	LogoContainer,
 	Page,
-	ProfilePicture
+	PictureContainer
 } from "./styles";
 
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
@@ -22,8 +22,6 @@ function SignUp() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordConfirmation, setPasswordConfirmation] = useState("");
-	const [pictureUrl, setPictureUrl] = useState("");
-
 	const [pictureFile, setPictureFile] = useState<File>();
 	const [picturePreview, setPicturePreview] = useState<string>("");
 
@@ -33,7 +31,10 @@ function SignUp() {
 
 	const [passwordLengthError, setPasswordLengthError] = useState(false);
 	const [passwordMismatchError, setPasswordMismatchError] = useState(false);
-	const [requestError, setRequestError] = useState("");
+	const [usernameTakenError, setUsernameTakenError] = useState(false);
+	const [noPictureError, setNoPictureError] = useState(false);
+	const [requestError, setRequestError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 
 	let navigate = useNavigate();
 
@@ -41,9 +42,18 @@ function SignUp() {
 		e.preventDefault();
 		setPasswordLengthError(false);
 		setPasswordMismatchError(false);
+		setUsernameTakenError(false);
+		setNoPictureError(false);
+		setRequestError(false);
 		setLoading(true);
 		setDisabled(true);
-		setRequestError("");
+
+		if (!pictureFile) {
+			setNoPictureError(true);
+			setLoading(false);
+			setDisabled(false);
+			return;
+		}
 
 		if (password.length < 6) {
 			setPasswordLengthError(true);
@@ -64,9 +74,19 @@ function SignUp() {
 			navigate("/");
 			successAlert("Account created!");
 		} catch (error: Error | any) {
-			setRequestError(error.response.data);
+			const errorResponse = error.response;
+
+			if (errorResponse.status === 409) {
+				setUsernameTakenError(true);
+				setErrorMessage(errorResponse.data);
+			} else {
+				setRequestError(true);
+				setErrorMessage(errorResponse.data);
+			}
+
 			setLoading(false);
 			setDisabled(false);
+			return;
 		}
 	}
 
@@ -89,21 +109,18 @@ function SignUp() {
 				<Logo>CINEMATEK</Logo>
 			</LogoContainer>
 
-			{requestError && <Alert severity="error">{requestError}</Alert>}
+			{requestError && <Alert severity="error">{errorMessage}</Alert>}
 
 			<Form component="form" onSubmit={handleSubmit}>
-				<ProfilePicture>
-					<label htmlFor="picture">
-						<AddAPhotoIcon />
-					</label>
-					<input type="file" id="picture" onChange={(e) => uploadPicture(e)} />
-
-					{picturePreview && (
-						<div>
-							<img src={picturePreview} alt="preview" />
-						</div>
-					)}
-				</ProfilePicture>
+				<ProfilePicture
+					uploadPicture={uploadPicture}
+					picturePreview={picturePreview}
+				/>
+				{noPictureError && (
+					<Alert severity="error">
+						There is no file for the profile picture
+					</Alert>
+				)}
 
 				<Input
 					placeholder="Username"
@@ -113,6 +130,7 @@ function SignUp() {
 					disabled={disabled}
 					required
 				/>
+				{usernameTakenError && <Alert severity="error">{errorMessage}</Alert>}
 
 				<PasswordInput
 					password={password}
@@ -146,14 +164,14 @@ function SignUp() {
 					size="small"
 					onClick={() => navigate("/")}
 				>
-					Already have an account? Log In{" "}
+					Already have an account? Log In
 				</Button>
 			</Form>
 		</Page>
 	);
 }
 
-interface Props {
+interface PasswordInputProps {
 	password: string;
 	setPassword: React.Dispatch<React.SetStateAction<string>>;
 	showPassword: boolean;
@@ -167,7 +185,7 @@ function PasswordInput({
 	showPassword,
 	setShowPassword,
 	disabled
-}: Props) {
+}: PasswordInputProps) {
 	return (
 		<>
 			<Input
@@ -189,6 +207,31 @@ function PasswordInput({
 				}
 			/>
 		</>
+	);
+}
+
+interface ProfilePictureProps {
+	uploadPicture: (e: React.ChangeEvent<HTMLInputElement> | undefined) => void;
+	picturePreview: string;
+}
+
+function ProfilePicture({
+	uploadPicture,
+	picturePreview
+}: ProfilePictureProps) {
+	return (
+		<PictureContainer>
+			<label htmlFor="picture">
+				<AddAPhotoIcon />
+			</label>
+			<input type="file" id="picture" onChange={(e) => uploadPicture(e)} />
+
+			{picturePreview && (
+				<div>
+					<img src={picturePreview} alt="preview" />
+				</div>
+			)}
+		</PictureContainer>
 	);
 }
 
