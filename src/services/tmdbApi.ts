@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const TMDB_URL = import.meta.env.VITE_TMDB_URL;
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -11,14 +11,14 @@ function getMovie(movieId: number) {
 	return axios.get(`${TMDB_URL}/movie/${movieId}?api_key=${API_KEY}`);
 }
 
-function findMoviesByName(name: string) {
+function findMoviesByName(name: string, page: number) {
 	return axios.get(
-		`${TMDB_URL}/search/movie?api_key=${API_KEY}&query=${name}&include_adult=false`
+		`${TMDB_URL}/search/movie?api_key=${API_KEY}&query=${name}&include_adult=false&page=${page}`
 	);
 }
 
 export const tmdbApi = {
 	findMoviesByName,
 	getMovie,
-	getTrendingMovies,
+	getTrendingMovies
 };

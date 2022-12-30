@@ -60,24 +60,26 @@ function MainPage() {
 
 			{!movies && <Loader />}
 
-			<TrendingMovies cols={columns}>
-				<ImageListItem key="Subheader" cols={2}>
-					<PageTitle>Trending</PageTitle>
-				</ImageListItem>
-				{movies?.map((movie) => (
-					<ImageListItem
-						key={movie.id}
-						sx={{ cursor: "pointer" }}
-						onClick={() => navigate(`/movies/${movie.id}`)}
-					>
-						<img
-							src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
-							alt={movie.title}
-						/>
-						<ImageListItemBar title={movie.title} />
+			{movies && (
+				<TrendingMovies cols={columns}>
+					<ImageListItem key="Subheader" cols={columns}>
+						<PageTitle>Trending</PageTitle>
 					</ImageListItem>
-				))}
-			</TrendingMovies>
+					{movies?.map((movie) => (
+						<ImageListItem
+							key={movie.id}
+							sx={{ cursor: "pointer" }}
+							onClick={() => navigate(`/movies/${movie.id}`)}
+						>
+							<img
+								src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
+								alt={movie.title}
+							/>
+							<ImageListItemBar title={movie.title} />
+						</ImageListItem>
+					))}
+				</TrendingMovies>
+			)}
 		</Page>
 	);
 }

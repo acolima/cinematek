@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import { IconButton, InputAdornment } from "@mui/material";
-import { ArrowBackOutlined, Menu, Search } from "@mui/icons-material";
+import { ArrowBackOutlined, Clear, Menu, Search } from "@mui/icons-material";
 
 import useMenu from "../../hooks/useMenu";
 import { Button, Container, PageTitle, SearchInput } from "./styles";
@@ -84,6 +84,10 @@ function SearchHeader({ movieName, setMovieName, handleSearch }: Props) {
 		}
 	}
 
+	function handleClear() {
+		if (setMovieName) setMovieName("");
+	}
+
 	return (
 		<SearchInput
 			placeholder="Search for movies"
@@ -92,6 +96,9 @@ function SearchHeader({ movieName, setMovieName, handleSearch }: Props) {
 			onKeyDown={(e) => handleInputKeyDown(e)}
 			endAdornment={
 				<InputAdornment position="end">
+					<IconButton onClick={handleClear} edge="end">
+						{movieName && <Clear />}
+					</IconButton>
 					<IconButton onClick={handleSearch} edge="end">
 						<Search />
 					</IconButton>
