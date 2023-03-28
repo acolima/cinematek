@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Box, ImageList, Typography } from "@mui/material";
 
 const Page = styled(Box)({
-	width: "60%",
+	width: "90%",
 	margin: "0 auto",
 	display: "flex",
 	flexDirection: "column",

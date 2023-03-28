@@ -10,7 +10,7 @@ const Container = styled(Box)({
 	zIndex: 1,
 	padding: 0,
 	background: "#0c174b",
-	width: "60%",
+	width: "90%",
 	height: "70px",
 	"@media (max-width: 600px)": {
 		width: "100%"

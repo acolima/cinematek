@@ -4,6 +4,6 @@ import Search from "./SearchPage";
 import SignIn from "./SignInPage";
 import SignUp from "./SignUpPage";
 import User from "./User";
-import UserPage from "./UserPage";
+import UserPage from "./UserMovies";
 
 export { Main, Movie, Search, SignIn, SignUp, User, UserPage };
