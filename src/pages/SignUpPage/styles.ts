@@ -2,19 +2,12 @@ import styled from "@emotion/styled";
 import { LoadingButton } from "@mui/lab";
 import { Box, Link, OutlinedInput, Typography } from "@mui/material";
 
-const Container = styled(Box)({
-	justifyContent: "space-around",
-	height: "100vh",
-	display: "flex",
-	flexDirection: "column",
-	alignItems: "center"
-});
-
 const Page = styled(Box)({
 	display: "flex",
 	flexDirection: "column",
 	alignItems: "center",
-	justifyContent: "center"
+	justifyContent: "center",
+	height: "100vh"
 });
 
 const LogoContainer = styled(Box)({
@@ -74,7 +67,8 @@ const Credits = styled(Link)({
 	flexDirection: "column",
 	alignItems: "center",
 	textDecoration: "none",
-	color: "#fff"
+	color: "#fff",
+	paddingTop: "40px"
 });
 
 const PictureContainer = styled.div({
@@ -102,7 +96,6 @@ const PictureContainer = styled.div({
 
 export {
 	Button as LoadingButton,
-	Container,
 	Credits,
 	Form,
 	Input,

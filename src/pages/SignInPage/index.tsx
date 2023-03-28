@@ -13,7 +13,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { api } from "../../services/api";
 import { useAuth } from "../../hooks";
 import {
-	Container,
 	Credits,
 	Form,
 	Input,
@@ -68,60 +67,58 @@ function SignIn() {
 	}
 
 	return (
-		<Container>
-			<Page>
-				<LogoContainer>
-					<Logo>CINEMATEK</Logo>
-				</LogoContainer>
+		<Page>
+			<LogoContainer>
+				<Logo>CINEMATEK</Logo>
+			</LogoContainer>
 
-				<Form component="form" onSubmit={handleSubmit}>
-					<Input
-						placeholder="Username"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						disabled={disabled}
-						required
-					/>
+			<Form component="form" onSubmit={handleSubmit}>
+				<Input
+					placeholder="Username"
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+					disabled={disabled}
+					required
+				/>
 
-					<Input
-						placeholder="Password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						type={showPassword ? "text" : "password"}
-						disabled={disabled}
-						required
-						endAdornment={
-							<InputAdornment position="end">
-								<IconButton
-									onClick={() => setShowPassword(!showPassword)}
-									edge="end"
-								>
-									{showPassword ? <VisibilityOff /> : <Visibility />}
-								</IconButton>
-							</InputAdornment>
-						}
-					/>
-					{passwordLengthError && (
-						<Alert severity="error">
-							Password must be at least 6 caracters long
-						</Alert>
-					)}
+				<Input
+					placeholder="Password"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+					type={showPassword ? "text" : "password"}
+					disabled={disabled}
+					required
+					endAdornment={
+						<InputAdornment position="end">
+							<IconButton
+								onClick={() => setShowPassword(!showPassword)}
+								edge="end"
+							>
+								{showPassword ? <VisibilityOff /> : <Visibility />}
+							</IconButton>
+						</InputAdornment>
+					}
+				/>
+				{passwordLengthError && (
+					<Alert severity="error">
+						Password must be at least 6 caracters long
+					</Alert>
+				)}
 
-					{requestError && <Alert severity="error">{requestError}</Alert>}
+				{requestError && <Alert severity="error">{requestError}</Alert>}
 
-					<LoadingButton variant="outlined" type="submit" loading={loading}>
-						Log In
-					</LoadingButton>
+				<LoadingButton variant="outlined" type="submit" loading={loading}>
+					Log In
+				</LoadingButton>
 
-					<Button
-						sx={{ color: "#fff" }}
-						size="small"
-						onClick={() => navigate("/sign-up")}
-					>
-						First time? Create an account
-					</Button>
-				</Form>
-			</Page>
+				<Button
+					sx={{ color: "#fff" }}
+					size="small"
+					onClick={() => navigate("/sign-up")}
+				>
+					First time? Create an account
+				</Button>
+			</Form>
 
 			<Credits
 				href="https://www.themoviedb.org/?language=pt-BR"
@@ -132,7 +129,7 @@ function SignIn() {
 				</Typography>
 				<img src={tmdbLogo} alt="TMBD Logo" width="60" />
 			</Credits>
-		</Container>
+		</Page>
 	);
 }
 
