@@ -50,7 +50,8 @@ function MainPage() {
 		}
 	}
 
-	if (window.screen.width > 600) columns = 4;
+	if (window.innerWidth > 600) columns = 2;
+	if (window.innerWidth > 900) columns = 4;
 
 	return (
 		<Page>

@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import { Box, Button, Typography } from "@mui/material";
 
+interface Props {
+	backdropUrl?: string;
+}
+
 export const styles = {
 	backdrop: {
 		opacity: "0.6",
@@ -21,21 +25,36 @@ export const styles = {
 const Page = styled(Box)({
 	position: "relative",
 	display: "flex",
-	flexDirection: "column",
-	width: "60%",
+	flexDirection: "row",
+	alignItems: "center",
+	width: "70%",
+	height: "100vh",
 	boxSizing: "border-box",
 	margin: "0 auto",
+	zIndex: 1,
 	"@media (max-width: 600px)": {
 		margin: "0",
+		width: "100%",
+		height: "100%",
+		flexDirection: "column"
+	},
+	"@media (max-width: 900px)": {
 		width: "100%"
 	}
 });
 
 const Poster = styled(Box)({
-	position: "absolute",
-	zIndex: "1",
-	top: 25,
-	alignSelf: "center"
+	width: "300px",
+	display: "flex",
+	marginLeft: "60px",
+	"@media (max-width: 600px)": {
+		width: "200px",
+		position: "absolute",
+		zIndex: "1",
+		top: 25,
+		justifyContent: "center",
+		marginLeft: 0
+	}
 });
 
 const ArrowBackButton = styled(Button)({
@@ -45,19 +64,29 @@ const ArrowBackButton = styled(Button)({
 });
 
 const MovieInfo = styled(Box)({
-	marginTop: "70px",
+	margin: "10px",
+	padding: "10px",
 	display: "flex",
 	flexDirection: "column",
-	gap: "20px"
+	gap: "20px",
+	background: "rgb(0, 0, 0, 0.5)",
+	"@media (max-width: 600px)": {
+		background: "none",
+		marginTop: "70px",
+		padding: 0
+	}
 });
 
 const Title = styled(Typography)({
 	fontFamily: "Poppins",
-	fontSize: "16px",
+	fontSize: "32px",
 	fontWeight: "500",
 	textTransform: "uppercase",
 	textAlign: "center",
-	boxSizing: "border-box"
+	boxSizing: "border-box",
+	"@media (max-width: 600px)": {
+		fontSize: "16px"
+	}
 });
 
 const Genres = styled(Box)({
@@ -83,13 +112,33 @@ const Runtime = styled(Typography)({
 });
 
 const FavoriteButton = styled(Box)({
-	position: "absolute",
-	top: "10px",
-	right: "10px"
+	"@media (max-width: 600px)": {
+		position: "absolute",
+		top: "10px",
+		right: "10px"
+	}
 });
+
+const Buttons = styled(Box)({
+	display: "flex",
+	justifyContent: "space-around"
+});
+
+const BackdropDesktop = styled(Box)<Props>(({ backdropUrl }) => ({
+	width: "100%",
+	height: "100%",
+	position: "absolute",
+	zIndex: -1,
+
+	background: `url(${backdropUrl})`,
+	backgroundSize: "cover",
+	opacity: "0.6"
+}));
 
 export {
 	ArrowBackButton,
+	BackdropDesktop,
+	Buttons,
 	FavoriteButton,
 	Genres,
 	MovieInfo,

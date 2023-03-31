@@ -12,6 +12,8 @@ import { errorAlert } from "../../utils/toastifyAlerts";
 import { TMDBMovieResult } from "../../utils/models";
 import {
 	ArrowBackButton,
+	BackdropDesktop,
+	Buttons,
 	FavoriteButton,
 	Genres,
 	MovieInfo,
@@ -34,6 +36,9 @@ function Movie() {
 	const { movies } = useMovies();
 
 	let navigate = useNavigate();
+
+	let mobile = true;
+	let posterWidth = 150;
 
 	useEffect(() => {
 		getMovie();
@@ -74,51 +79,66 @@ function Movie() {
 		setWatchlist(inWatchlist ? true : false);
 	}
 
+	if (window.innerWidth > 600) {
+		mobile = false;
+		posterWidth = window.innerWidth > 900 ? 300 : 200;
+	}
+
 	if (!movie) return <Loader />;
 
 	return (
 		<Page>
-			{movie.backdrop_path ? (
-				<img
-					src={`https://image.tmdb.org/t/p/w400/${movie?.backdrop_path}`}
-					alt={movie.title}
-					style={styles.backdrop}
-				/>
-			) : (
-				<Box sx={styles.noBackdrop}></Box>
+			{mobile &&
+				(movie.backdrop_path ? (
+					<img
+						src={`https://image.tmdb.org/t/p/w400/${movie?.backdrop_path}`}
+						alt={movie.title}
+						style={styles.backdrop}
+					/>
+				) : (
+					<Box sx={styles.noBackdrop}></Box>
+				))}
+
+			{!mobile && (
+				<BackdropDesktop
+					backdropUrl={`https://image.tmdb.org/t/p/w400/${movie?.backdrop_path}`}
+				></BackdropDesktop>
 			)}
 
 			<Poster>
 				<img
 					src={`https://image.tmdb.org/t/p/w400/${movie?.poster_path}`}
 					alt={movie.title}
-					width="150"
+					width={posterWidth}
 				/>
 			</Poster>
 
-			<ArrowBackButton onClick={() => navigate(-1)}>
-				<ArrowBackOutlinedIcon sx={styles.icons} />
-			</ArrowBackButton>
+			<>
+				<ArrowBackButton onClick={() => navigate(-1)}>
+					<ArrowBackOutlinedIcon sx={styles.icons} />
+				</ArrowBackButton>
 
-			<FavoriteButton>
-				<Favorite movie={movie} isFavorite={favorite} />
-			</FavoriteButton>
+				<MovieInfo>
+					<Title>{movie.title}</Title>
 
-			<MovieInfo>
-				<Title>{movie.title}</Title>
+					<Genres>
+						{movie.genres.map((genre) => (
+							<Chip label={genre.name} color="primary" key={genre.id} />
+						))}
+					</Genres>
 
-				<Genres>
-					{movie.genres.map((genre) => (
-						<Chip label={genre.name} color="primary" key={genre.id} />
-					))}
-				</Genres>
+					<Overview>{movie.overview}</Overview>
 
-				<Overview>{movie.overview}</Overview>
+					<Runtime>Duration: {movie.runtime} minutes</Runtime>
 
-				<Runtime>Duration: {movie.runtime} minutes</Runtime>
-
-				<Watch movie={movie} wasWatched={watched} inWatchlist={watchlist} />
-			</MovieInfo>
+					<Buttons>
+						<FavoriteButton>
+							<Favorite movie={movie} isFavorite={favorite} />
+						</FavoriteButton>
+						<Watch movie={movie} wasWatched={watched} inWatchlist={watchlist} />
+					</Buttons>
+				</MovieInfo>
+			</>
 		</Page>
 	);
 }

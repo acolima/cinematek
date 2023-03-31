@@ -82,12 +82,12 @@ function Watch({ movie, wasWatched, inWatchlist }: Props) {
 			)}
 
 			{watchlist ? (
-				<IconButton disabled={watched} onClick={handleWatchlistClick}>
+				<IconButton onClick={handleWatchlistClick}>
 					<BookmarkAdd fontSize="large" />
 				</IconButton>
 			) : (
 				<IconButton disabled={watched} onClick={handleWatchlistClick}>
-					<BookmarkAddOutlined fontSize="large" />
+					<BookmarkAddOutlined fontSize="large" htmlColor="white" />
 				</IconButton>
 			)}
 		</Buttons>
@@ -95,8 +95,9 @@ function Watch({ movie, wasWatched, inWatchlist }: Props) {
 }
 
 const Buttons = styled(Box)({
+	width: "40%",
 	display: "flex",
-	justifyContent: "space-evenly"
+	justifyContent: "space-between"
 });
 
 const IconButton = styled(Button)({
