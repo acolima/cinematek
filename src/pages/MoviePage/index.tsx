@@ -7,9 +7,9 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Favorite, Loader, Watch } from "../../components";
 
 import { api, tmdbApi } from "../../services";
-import { useAuth, useMovies } from "../../hooks";
+import { useAuth } from "../../hooks";
 import { errorAlert } from "../../utils/toastifyAlerts";
-import { TMDBMovieResult } from "../../utils/models";
+import { IUserMovie, TMDBMovieResult } from "../../utils/models";
 import {
 	ArrowBackButton,
 	BackdropDesktop,
@@ -27,13 +27,10 @@ import {
 
 function Movie() {
 	const [movie, setMovie] = useState<TMDBMovieResult | null>(null);
-	const [favorite, setFavorite] = useState(false);
-	const [watched, setWatched] = useState(false);
-	const [watchlist, setWatchlist] = useState(false);
+	const [userMovie, setUserMovie] = useState<IUserMovie | undefined>(undefined);
 
 	const { auth, signOut } = useAuth();
 	const { id } = useParams();
-	const { movies } = useMovies();
 
 	let navigate = useNavigate();
 
@@ -47,8 +44,9 @@ function Movie() {
 
 	async function getMovie() {
 		try {
-			await api.validateToken(auth?.token);
-			moviesStatus();
+			const { data } = await api.findUserMovie(auth?.token, Number(id));
+			setUserMovie(data);
+
 			try {
 				const { data } = await tmdbApi.getMovie(Number(id));
 				setMovie(data);
@@ -60,23 +58,6 @@ function Movie() {
 			errorAlert("Session expired. Please, log in again");
 			navigate("/");
 		}
-	}
-
-	function moviesStatus() {
-		const isFavorite = movies.find(
-			(m) => m.movie.tmdbId === Number(id) && m.favorite
-		);
-		setFavorite(isFavorite ? true : false);
-
-		const wasWatched = movies.find(
-			(m) => m.movie.tmdbId === Number(id) && m.watched
-		);
-		setWatched(wasWatched ? true : false);
-
-		const inWatchlist = movies.find(
-			(m) => m.movie.tmdbId === Number(id) && m.watchlist
-		);
-		setWatchlist(inWatchlist ? true : false);
 	}
 
 	if (window.innerWidth > 600) {
@@ -133,9 +114,9 @@ function Movie() {
 
 					<Buttons>
 						<FavoriteButton>
-							<Favorite movie={movie} isFavorite={favorite} />
+							<Favorite movie={movie} userMovie={userMovie} />
 						</FavoriteButton>
-						<Watch movie={movie} wasWatched={watched} inWatchlist={watchlist} />
+						<Watch movie={movie} userMovie={userMovie} />
 					</Buttons>
 				</MovieInfo>
 			</>

@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box } from "@mui/material";
-
 import { Header, Loader, Menu } from "../../components";
 
 import { api } from "../../services";
-import { useAuth, useMenu, useMovies } from "../../hooks";
-import { IMovie, IUserMovie } from "../../utils/models";
+import { useAuth, useMenu } from "../../hooks";
+import { IMovie, IUserMovies } from "../../utils/models";
 import { errorAlert } from "../../utils/toastifyAlerts";
 import {
 	MovieContainer,
@@ -19,15 +17,13 @@ import {
 	UserContainer
 } from "./styles";
 
-function User() {
+function UserPage() {
+	const [userMovies, setUserMovies] = useState<IUserMovies>();
+
 	const [loading, setLoading] = useState(false);
-	const [favoriteMovies, setFavoriteMovies] = useState<IUserMovie[]>([]);
-	const [watchedMovies, setWatchedMovies] = useState<IUserMovie[]>([]);
-	const [watchlistMovies, setWatchlistMovies] = useState<IUserMovie[]>([]);
 
 	const { auth, signOut } = useAuth();
 	const { showMenu } = useMenu();
-	const { movies } = useMovies();
 
 	let navigate = useNavigate();
 
@@ -38,12 +34,8 @@ function User() {
 
 	async function getMovies() {
 		try {
-			await api.validateToken(auth?.token);
-
-			setFavoriteMovies(movies.filter((movie: any) => movie.favorite));
-			setWatchedMovies(movies.filter((movie: any) => movie.watched));
-			setWatchlistMovies(movies.filter((movie: any) => movie.watchlist));
-
+			const { data } = await api.getAllUserMovies(auth?.token);
+			setUserMovies(data);
 			setLoading(false);
 		} catch (error) {
 			signOut();
@@ -66,52 +58,45 @@ function User() {
 			{showMenu && <Menu />}
 			<UserContainer>
 				<UserAvatar alt={auth?.username} src={auth?.pictureUrl} />
-				<Box>
-					{movies?.length === 0 ? (
-						<p>No added movies</p>
-					) : (
-						<p>{movies?.length} added movies</p>
-					)}
-				</Box>
 			</UserContainer>
 
-			{favoriteMovies.length !== 0 && (
+			{userMovies?.favorite.length !== 0 && (
 				<>
 					<SectionHeader>
 						<Section>Favorite</Section>
 						<span onClick={() => navigate("/user/favorite")}>See all</span>
 					</SectionHeader>
 					<MovieList>
-						{favoriteMovies.slice(0, 4).map((m) => (
-							<Movie key={m.id} movie={m.movie} />
+						{userMovies?.favorite.slice(0, 4).map((m) => (
+							<Movie key={m.tmdbId} movie={m} />
 						))}
 					</MovieList>
 				</>
 			)}
 
-			{watchedMovies.length !== 0 && (
+			{userMovies?.watched.length !== 0 && (
 				<>
 					<SectionHeader>
 						<Section>Watched</Section>
 						<span onClick={() => navigate("/user/watched")}>See all</span>
 					</SectionHeader>
 					<MovieList>
-						{watchedMovies.slice(0, 4).map((m) => (
-							<Movie key={m.id} movie={m.movie} />
+						{userMovies?.watched.slice(0, 4).map((m) => (
+							<Movie key={m.tmdbId} movie={m} />
 						))}
 					</MovieList>
 				</>
 			)}
 
-			{watchlistMovies.length !== 0 && (
+			{userMovies?.watchlist.length !== 0 && (
 				<>
 					<SectionHeader>
 						<Section>Watchlist</Section>
 						<span onClick={() => navigate("/user/watchlist")}>See all</span>
 					</SectionHeader>
 					<MovieList>
-						{watchlistMovies.slice(0, 4).map((m) => (
-							<Movie key={m.id} movie={m.movie} />
+						{userMovies?.watchlist.slice(0, 4).map((m) => (
+							<Movie key={m.tmdbId} movie={m} />
 						))}
 					</MovieList>
 				</>
@@ -137,4 +122,4 @@ function Movie({ movie }: Props) {
 	);
 }
 
-export default User;
+export default UserPage;

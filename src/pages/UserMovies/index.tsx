@@ -14,19 +14,18 @@ import InfoIcon from "@mui/icons-material/Info";
 import { Header, Menu } from "../../components";
 
 import { api } from "../../services/api";
-import { useAuth, useMenu, useMovies } from "../../hooks";
+import { useAuth, useMenu } from "../../hooks";
 import { IUserMovie } from "../../utils/models";
 import { errorAlert } from "../../utils/toastifyAlerts";
 import { Movies, Page } from "./styles";
 
-function UserPage() {
+function UserMovies() {
 	const [movies, setMovies] = useState<IUserMovie[]>([]);
 
 	const { category } = useParams();
 
 	const { auth, signOut } = useAuth();
 	const { showMenu } = useMenu();
-	const { movies: userMovies } = useMovies();
 
 	let navigate = useNavigate();
 
@@ -36,8 +35,8 @@ function UserPage() {
 
 	async function validateToken() {
 		try {
-			await api.validateToken(auth?.token);
-			setMovies(userMovies.filter((movie: any) => movie[category!]));
+			const { data } = await api.getUserMovies(auth?.token, category!);
+			setMovies(data);
 		} catch (error) {
 			signOut();
 			errorAlert("Session expired. Please, log in again");
@@ -97,4 +96,4 @@ function Movie({ userMovie }: Props) {
 	);
 }
 
-export default UserPage;
+export default UserMovies;

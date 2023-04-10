@@ -5,7 +5,7 @@ import {
 	Search,
 	SignIn,
 	SignUp,
-	User,
+	UserMovies,
 	UserPage
 } from "./pages/index";
 
@@ -17,9 +17,9 @@ function PageRoutes() {
 				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/movies" element={<Main />} />
 				<Route path="/movies/:id" element={<Movie />} />
-				<Route path="/user/:category" element={<UserPage />} />
+				<Route path="/user/:category" element={<UserMovies />} />
 				<Route path="/search" element={<Search />} />
-				<Route path="/user" element={<User />} />
+				<Route path="/user" element={<UserPage />} />
 			</Routes>
 		</BrowserRouter>
 	);

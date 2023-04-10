@@ -10,21 +10,19 @@ import {
 import styled from "@emotion/styled";
 
 import { api } from "../../../services/api";
-import { useAuth, useMovies } from "../../../hooks";
-import { TMDBMovieResult } from "../../../utils/models";
+import { useAuth } from "../../../hooks";
+import { IUserMovie, TMDBMovieResult } from "../../../utils/models";
 
 interface Props {
 	movie: TMDBMovieResult;
-	wasWatched: boolean;
-	inWatchlist: boolean;
+	userMovie: IUserMovie | undefined;
 }
 
-function Watch({ movie, wasWatched, inWatchlist }: Props) {
-	const [watched, setWatched] = useState(wasWatched);
-	const [watchlist, setWatchlist] = useState(inWatchlist);
+function Watch({ movie, userMovie }: Props) {
+	const [watched, setWatched] = useState(userMovie?.watched);
+	const [watchlist, setWatchlist] = useState(userMovie?.watchlist);
 
 	const { auth } = useAuth();
-	const { saveUserMovies } = useMovies();
 
 	useEffect(() => {}, [watched, watchlist]);
 
@@ -47,23 +45,12 @@ function Watch({ movie, wasWatched, inWatchlist }: Props) {
 		} catch (error) {
 			console.log(error);
 		}
-		updateLocalMovies();
 	}
 
 	async function handleWatchlistClick() {
 		try {
 			await api.updateAction(auth?.token, "watchlist", !watchlist, movieData);
 			setWatchlist(!watchlist);
-		} catch (error) {
-			console.log(error);
-		}
-		updateLocalMovies();
-	}
-
-	async function updateLocalMovies() {
-		try {
-			const { data } = await api.getAllUserMovies(auth?.token);
-			saveUserMovies(data);
 		} catch (error) {
 			console.log(error);
 		}

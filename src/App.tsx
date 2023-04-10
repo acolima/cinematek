@@ -1,6 +1,6 @@
 import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer } from "react-toastify";
-import { AuthProvider, MenuDrawerProvider, MoviesProvider } from "./contexts";
+import { AuthProvider, MenuDrawerProvider } from "./contexts";
 import PageRoutes from "./routes";
 import { createTheme, ThemeProvider } from "@mui/material";
 
@@ -15,10 +15,8 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<AuthProvider>
 				<MenuDrawerProvider>
-					<MoviesProvider>
-						<ToastContainer />
-						<PageRoutes />
-					</MoviesProvider>
+					<ToastContainer />
+					<PageRoutes />
 				</MenuDrawerProvider>
 			</AuthProvider>
 		</ThemeProvider>

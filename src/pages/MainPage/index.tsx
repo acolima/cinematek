@@ -6,7 +6,7 @@ import { ImageListItem, ImageListItemBar } from "@mui/material";
 import { Header, Loader, Menu } from "../../components";
 
 import { api, tmdbApi } from "../../services";
-import { useAuth, useMenu, useMovies } from "../../hooks";
+import { useAuth, useMenu } from "../../hooks";
 import { errorAlert } from "../../utils/toastifyAlerts";
 import { TMDBMoviesResult } from "../../utils/models";
 import { Page, PageTitle, TrendingMovies } from "./styles";
@@ -16,7 +16,6 @@ function MainPage() {
 
 	const { auth, signOut } = useAuth();
 	const { showMenu } = useMenu();
-	const { saveUserMovies } = useMovies();
 
 	let navigate = useNavigate();
 	let columns = 1;
@@ -35,13 +34,6 @@ function MainPage() {
 				setMovies(data.results);
 			} catch (error: any) {
 				console.log("External API error");
-			}
-
-			try {
-				const { data } = await api.getAllUserMovies(auth?.token);
-				saveUserMovies(data);
-			} catch (error) {
-				console.log(error);
 			}
 		} catch (error) {
 			signOut();

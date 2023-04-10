@@ -16,15 +16,10 @@ export interface IMovie {
 	backdropPath: string | undefined;
 }
 
-export type UserMovie = {
+type UserMovie = {
 	id: number;
 	movie: IMovie;
 	modifyAt: string;
-};
-
-export type IUserMovieActions = Actions & {
-	movieId: number;
-	userId: number;
 };
 
 export type IUserMovie = Actions & UserMovie;
@@ -54,4 +49,10 @@ export interface TMDBSearchResult {
 	title: string;
 	release_date: string;
 	vote_average: number;
+}
+
+export interface IUserMovies {
+	watched: IMovie[];
+	favorite: IMovie[];
+	watchlist: IMovie[];
 }

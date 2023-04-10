@@ -6,19 +6,18 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import styled from "@emotion/styled";
 
 import { api } from "../../../services/api";
-import { useAuth, useMovies } from "../../../hooks";
-import { TMDBMovieResult } from "../../../utils/models";
+import { useAuth } from "../../../hooks";
+import { IUserMovie, TMDBMovieResult } from "../../../utils/models";
 
 interface Props {
 	movie: TMDBMovieResult;
-	isFavorite: boolean;
+	userMovie: IUserMovie | undefined;
 }
 
-function Favorite({ movie, isFavorite }: Props) {
-	const [favorite, setFavorite] = useState(isFavorite);
+function Favorite({ movie, userMovie }: Props) {
+	const [favorite, setFavorite] = useState(userMovie?.favorite);
 
 	const { auth } = useAuth();
-	const { saveUserMovies } = useMovies();
 
 	useEffect(() => {}, [favorite]);
 
@@ -31,13 +30,6 @@ function Favorite({ movie, isFavorite }: Props) {
 				backdropPath: movie!.backdrop_path
 			});
 			setFavorite(!favorite);
-		} catch (error) {
-			console.log(error);
-		}
-
-		try {
-			const { data } = await api.getAllUserMovies(auth?.token);
-			saveUserMovies(data);
 		} catch (error) {
 			console.log(error);
 		}
