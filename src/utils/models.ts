@@ -56,3 +56,9 @@ export interface IUserMovies {
 	favorite: IMovie[];
 	watchlist: IMovie[];
 }
+
+export interface IPRoviders {
+	logo_path: string;
+	provider_id: string;
+	provider_name: string;
+}

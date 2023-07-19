@@ -95,6 +95,15 @@ const Genres = styled(Box)({
 	flexWrap: "wrap"
 });
 
+const Providers = styled(Box)({
+	width: "90%",
+	margin: "0 auto",
+	display: "flex",
+	gap: "10px",
+	justifyContent: "space-evenly",
+	flexWrap: "wrap"
+});
+
 const Overview = styled(Typography)({
 	width: "85%",
 	textAlign: "justify",
@@ -145,6 +154,7 @@ export {
 	Overview,
 	Page,
 	Poster,
+	Providers,
 	Runtime,
 	Title
 };

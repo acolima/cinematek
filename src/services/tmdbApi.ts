@@ -17,8 +17,15 @@ function findMoviesByName(name: string, page: number) {
 	);
 }
 
+function getMovieProviders(movieId: number) {
+	return axios.get(
+		`${TMDB_URL}/movie/${movieId}/watch/providers?api_key=${API_KEY}`
+	);
+}
+
 export const tmdbApi = {
 	findMoviesByName,
 	getMovie,
+	getMovieProviders,
 	getTrendingMovies
 };
