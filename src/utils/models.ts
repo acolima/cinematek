@@ -30,7 +30,8 @@ export interface TMDBMovieResult {
 	overview: string | null;
 	poster_path: string | undefined;
 	backdrop_path: string | undefined;
-	runtime: number | null;
+	runtime: number;
+	release_date: string;
 	genres: {
 		id: number;
 		name: string;

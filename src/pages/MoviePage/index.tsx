@@ -21,10 +21,15 @@ import {
 	Page,
 	Poster,
 	Providers,
+	ReleaseDate,
 	Runtime,
 	Title,
 	styles
 } from "./styles";
+
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+dayjs.extend(duration);
 
 function Movie() {
 	const [movie, setMovie] = useState<TMDBMovieResult | null>(null);
@@ -58,6 +63,7 @@ function Movie() {
 
 				setMovie(movieData);
 				setProviders(movieProviders.results.BR?.flatrate);
+				formatRuntime(movieData.runtime);
 			} catch (error) {
 				console.log(error);
 				errorAlert("External API error. Try again later");
@@ -67,6 +73,12 @@ function Movie() {
 			errorAlert("Session expired. Please, log in again");
 			navigate("/");
 		}
+	}
+
+	function formatRuntime(time: number) {
+		const duration = dayjs.duration(+time, "minutes");
+
+		return `${duration.hours()}h ${duration.minutes()}min`;
 	}
 
 	if (window.innerWidth > 600) {
@@ -129,7 +141,11 @@ function Movie() {
 
 					<Overview>{movie.overview}</Overview>
 
-					<Runtime>Duration: {movie.runtime} minutes</Runtime>
+					<Runtime>Duration: {formatRuntime(movie.runtime)}</Runtime>
+
+					<ReleaseDate>
+						Release date: {dayjs(movie.release_date).format("DD/MM/YYYY")}
+					</ReleaseDate>
 
 					<Buttons>
 						<FavoriteButton>

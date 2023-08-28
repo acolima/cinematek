@@ -120,6 +120,13 @@ const Runtime = styled(Typography)({
 	margin: "0 auto"
 });
 
+const ReleaseDate = styled(Typography)({
+	width: "85%",
+	fontFamily: "Poppins",
+	fontSize: "12px",
+	margin: "0 auto"
+});
+
 const FavoriteButton = styled(Box)({
 	"@media (max-width: 600px)": {
 		position: "absolute",
@@ -155,6 +162,7 @@ export {
 	Page,
 	Poster,
 	Providers,
+	ReleaseDate,
 	Runtime,
 	Title
 };
